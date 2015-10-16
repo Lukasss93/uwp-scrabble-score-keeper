@@ -94,16 +94,16 @@ namespace Scrabble_Scoreboard
 
         private async void AddPoints(Players player)
         {
-            string player_num = "1";
+            string player_name="";
             switch(player)
             {
-                case Players.Player1: player_num = "1"; break;
-                case Players.Player2: player_num = "2"; break;
-                case Players.Player3: player_num = "3"; break;
-                case Players.Player4: player_num = "4"; break;
+                case Players.Player1: player_name = save.Player1.Name == "Player 1" ? "il Player 1" : save.Player1.Name; break;
+                case Players.Player2: player_name = save.Player2.Name == "Player 2" ? "il Player 2" : save.Player2.Name; break;
+                case Players.Player3: player_name = save.Player3.Name == "Player 3" ? "il Player 3" : save.Player3.Name; break;
+                case Players.Player4: player_name = save.Player4.Name == "Player 4" ? "il Player 4" : save.Player4.Name; break;
             }
 
-            var res = await MessageDialogHelper.DialogTextBox("Inserisci il punteggio per il Player " + player_num, "Inserisci punteggio","","ok","annulla",null,null,InputScopeNameValue.NumberFullWidth);
+            var res = await MessageDialogHelper.DialogTextBox("Inserisci il punteggio per " + player_name, "Inserisci punteggio","","ok","annulla",null,null,InputScopeNameValue.NumberFullWidth);
             if(res.result)
             {
                 int value;
@@ -179,7 +179,6 @@ namespace Scrabble_Scoreboard
                 button.MinWidth = 90;
                 
                 p1_stack.Children.Add(button);
-                myscroll.ChangeView(0.0f, double.MaxValue, 1.0f);
 
                 somma1 += point;                
             }
@@ -198,8 +197,7 @@ namespace Scrabble_Scoreboard
                 button.MinHeight = 30;
                 button.MinWidth = 90;
 
-                p2_stack.Children.Add(button);
-                myscroll.ChangeView(0.0f, double.MaxValue, 1.0f);
+                p2_stack.Children.Add(button);                
 
                 somma2 += point;                
             }
@@ -219,7 +217,6 @@ namespace Scrabble_Scoreboard
                 button.MinWidth = 90;
 
                 p3_stack.Children.Add(button);
-                myscroll.ChangeView(0.0f, double.MaxValue, 1.0f);
 
                 somma3 += point;                
             }
@@ -239,7 +236,6 @@ namespace Scrabble_Scoreboard
                 button.MinWidth = 90;
 
                 p4_stack.Children.Add(button);
-                myscroll.ChangeView(0.0f, double.MaxValue, 1.0f);
 
                 somma4 += point;                
             }
@@ -249,6 +245,8 @@ namespace Scrabble_Scoreboard
             p2_tot.Text = somma2 + "";
             p3_tot.Text = somma3 + "";
             p4_tot.Text = somma4 + "";
+
+            myscroll.ChangeView(0.0f, double.MaxValue, 1.0f);
 
         }
     }
