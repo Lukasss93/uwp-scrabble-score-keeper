@@ -42,8 +42,8 @@ namespace Scrabble_Scoreboard
             JsonSave save = new JsonSave();
             save.Player1.Name = "Player 1";
             save.Player2.Name = "Player 2";
-            save.Player3.Name = "Player 2";
-            save.Player4.Name = "Player 2";
+            save.Player3.Name = "Player 3";
+            save.Player4.Name = "Player 4";
             SettingsHelper.Initialize("save", Json.Serialize(save));
         }
 
