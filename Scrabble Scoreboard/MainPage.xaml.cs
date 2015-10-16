@@ -74,15 +74,17 @@ namespace Scrabble_Scoreboard
                 case Players.Player4: player_num = "4"; break;
             }
 
-            var res = await MessageDialogHelper.DialogTextBox("Inserisci il nome per il Player "+ player_num, "Inserisci nome");
-            if(res.result)
+            MessageDialogPlayer dialog = new MessageDialogPlayer(player_num);
+            await dialog.ShowAsync();
+
+            if(dialog.Result.status)
             {
                 switch(player)
                 {
-                    case Players.Player1: save.Player1.Name = res.output; break;
-                    case Players.Player2: save.Player2.Name = res.output; break;
-                    case Players.Player3: save.Player3.Name = res.output; break;
-                    case Players.Player4: save.Player4.Name = res.output; break;
+                    case Players.Player1: save.Player1.Name = dialog.Result.name; save.Player1.PlayerColor = dialog.Result.color; break;
+                    case Players.Player2: save.Player2.Name = dialog.Result.name; save.Player2.PlayerColor = dialog.Result.color; break;
+                    case Players.Player3: save.Player3.Name = dialog.Result.name; save.Player3.PlayerColor = dialog.Result.color; break;
+                    case Players.Player4: save.Player4.Name = dialog.Result.name; save.Player4.PlayerColor = dialog.Result.color; break;
                 }
 
                 Save();
@@ -145,6 +147,17 @@ namespace Scrabble_Scoreboard
             p3_name.Content = save.Player3.Name;
             p4_name.Content = save.Player4.Name;
 
+            //imposta i colori
+            p1_name.Background = new SolidColorBrush(save.Player1.PlayerColor);
+            p2_name.Background = new SolidColorBrush(save.Player2.PlayerColor);
+            p3_name.Background = new SolidColorBrush(save.Player3.PlayerColor);
+            p4_name.Background = new SolidColorBrush(save.Player4.PlayerColor);
+
+            p1_tot_grid.Background = new SolidColorBrush(save.Player1.PlayerColor);
+            p2_tot_grid.Background = new SolidColorBrush(save.Player2.PlayerColor);
+            p3_tot_grid.Background = new SolidColorBrush(save.Player3.PlayerColor);
+            p4_tot_grid.Background = new SolidColorBrush(save.Player4.PlayerColor);
+            
             //imposta i punti ai player e fai la somma
             int somma1 = 0;
             int somma2 = 0;

@@ -1,0 +1,33 @@
+﻿<ContentDialog
+    x:Class="Scrabble_Scoreboard.Classes.MessageDialogPlayer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Scrabble_Scoreboard.Classes"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Inserisci nome"
+    PrimaryButtonText="ok"  
+    SecondaryButtonText="annulla"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick" FullSizeDesired="True">
+
+    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <TextBox x:Name="name" Header="Inserisci un nome per il Player" Margin="0,0,0,5"/>
+        <ComboBox x:Name="color" Header="Scegli un colore per il Player" IsSynchronizedWithCurrentItem="False">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Background="{Binding Color}" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Name}" Grid.Column="1" Margin="6,0,0,0"/>
+                    </Grid>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <!-- Corpo del contenuto -->
+    </StackPanel>
+</ContentDialog>

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI;
+using Windows.UI.Xaml.Media;
 
 namespace Scrabble_Scoreboard.Classes
 {
@@ -36,11 +38,14 @@ namespace Scrabble_Scoreboard.Classes
         [DataMember]
         public string Name { get; set; }
         [DataMember]
+        public Color PlayerColor { get; set; }
+        [DataMember]
         public List<int> Points { get; set; }
 
         public JsonSavePlayer()
         {
             Name = null;
+            PlayerColor = Color.FromArgb(255, 11, 108, 248);
             Points = new List<int>();
         }
     }
