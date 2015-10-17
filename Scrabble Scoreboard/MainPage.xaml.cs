@@ -299,6 +299,20 @@ namespace Scrabble_Scoreboard
             p3_tot.Text = somma3 + "";
             p4_tot.Text = somma4 + "";
 
+            //mostra/nascondi pulsante modifica/elimina
+            if(save.Player1.Points.Count+save.Player2.Points.Count+save.Player3.Points.Count+save.Player4.Points.Count==0)
+            {
+                headeractionbutton.Visibility = Visibility.Collapsed;
+                actionbutton = ActionButton.None;
+                UpdateActionButtonIcon();
+            }
+            else
+            {
+                headeractionbutton.Visibility = Visibility.Visible;
+            }
+
+            //scrollo fino alla fine
+            //TODO: non funziona bene
             myscroll.ChangeView(0.0f, double.MaxValue, 1.0f);
 
         }
