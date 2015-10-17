@@ -25,14 +25,17 @@ namespace Scrabble_Scoreboard
 {
     public sealed partial class MainPage : Page
     {
-        private enum Players { Player1, Player2, Player3, Player4 }
         JsonSave save;
+        ActionButton actionbutton = ActionButton.None;
 
         public MainPage()
         {
             this.InitializeComponent();
             this.NavigationCacheMode = NavigationCacheMode.Required;
             titlebar.Margin = Utilities.SetMarginTop(titlebar, StatusBar.GetForCurrentView().OccludedRect.Height);
+
+            UpdateActionButtonIcon();
+            headeractionbutton.Click += Headeractionbutton_Click;
 
             p1_name.Click += (sender, e) => { EditName(Players.Player1); };
             p2_name.Click += (sender, e) => { EditName(Players.Player2); };
@@ -45,6 +48,39 @@ namespace Scrabble_Scoreboard
             p4_add.Click += (sender, e) => { AddPoints(Players.Player4); };
 
             ab_clear.Click += Ab_clear_Click;
+        }
+
+        private void Headeractionbutton_Click(object sender, RoutedEventArgs e)
+        {
+            if(actionbutton==ActionButton.None)
+            {
+                actionbutton = ActionButton.Edit;
+            }
+            else if(actionbutton==ActionButton.Edit)
+            {
+                actionbutton = ActionButton.Delete;
+            }
+            else if(actionbutton==ActionButton.Delete)
+            {
+                actionbutton = ActionButton.None;
+            }
+            UpdateActionButtonIcon();
+        }
+
+        private void UpdateActionButtonIcon()
+        {
+            switch(actionbutton)
+            {
+                case ActionButton.None:
+                    headeractionbutton.Content = "";
+                    break;
+                case ActionButton.Edit:
+                    headeractionbutton.Content = "";
+                    break;
+                case ActionButton.Delete:
+                    headeractionbutton.Content = "";
+                    break;
+            }
         }
 
         #region AZIONI COMMAND BAR
@@ -165,6 +201,7 @@ namespace Scrabble_Scoreboard
             int somma4 = 0;
 
             p1_stack.Children.Clear();
+            int index = 0;
             foreach(int point in save.Player1.Points)
             {
                 Button button = new Button();
@@ -177,13 +214,18 @@ namespace Scrabble_Scoreboard
                 button.Height = 40;
                 button.MinHeight = 30;
                 button.MinWidth = 90;
+                button.Tag = new PlayerPoint(Players.Player1, index);
+                button.Click += PointButton;
+
                 
                 p1_stack.Children.Add(button);
 
-                somma1 += point;                
+                somma1 += point;
+                index++;             
             }
 
             p2_stack.Children.Clear();
+            index = 0;
             foreach(int point in save.Player2.Points)
             {
                 Button button = new Button();
@@ -196,13 +238,17 @@ namespace Scrabble_Scoreboard
                 button.Height = 40;
                 button.MinHeight = 30;
                 button.MinWidth = 90;
+                button.Tag = new PlayerPoint(Players.Player2, index);
+                button.Click += PointButton;
 
                 p2_stack.Children.Add(button);                
 
-                somma2 += point;                
+                somma2 += point;
+                index++;           
             }
 
             p3_stack.Children.Clear();
+            index = 0;
             foreach(int point in save.Player3.Points)
             {
                 Button button = new Button();
@@ -215,13 +261,17 @@ namespace Scrabble_Scoreboard
                 button.Height = 40;
                 button.MinHeight = 30;
                 button.MinWidth = 90;
+                button.Tag = new PlayerPoint(Players.Player3, index);
+                button.Click += PointButton;
 
                 p3_stack.Children.Add(button);
 
-                somma3 += point;                
+                somma3 += point;
+                index++;               
             }
 
             p4_stack.Children.Clear();
+            index = 0;
             foreach(int point in save.Player4.Points)
             {
                 Button button = new Button();
@@ -234,10 +284,13 @@ namespace Scrabble_Scoreboard
                 button.Height = 40;
                 button.MinHeight = 30;
                 button.MinWidth = 90;
+                button.Tag = new PlayerPoint(Players.Player4, index);
+                button.Click += PointButton;
 
                 p4_stack.Children.Add(button);
 
-                somma4 += point;                
+                somma4 += point;
+                index++;
             }
 
             //aggiorna somma se vuota
@@ -248,6 +301,69 @@ namespace Scrabble_Scoreboard
 
             myscroll.ChangeView(0.0f, double.MaxValue, 1.0f);
 
+        }
+
+        private async void PointButton(object sender, RoutedEventArgs e)
+        {
+            if(actionbutton != ActionButton.None)
+            {
+                Button thisbutton = (sender as Button);
+                PlayerPoint playerpoint = (PlayerPoint)thisbutton.Tag;
+
+                switch(actionbutton)
+                {
+                    case ActionButton.Edit:
+
+                        var res = await MessageDialogHelper.DialogTextBox("Inserisci il nuovo valore", "Modifica valore", (string)thisbutton.Content);
+                        if(res.result)
+                        {
+                            int value;
+                            if(int.TryParse(res.output, out value))
+                            {
+                                switch(playerpoint.player)
+                                {
+                                    case Players.Player1:
+                                        save.Player1.Points[playerpoint.index] = value;
+                                        break;
+                                    case Players.Player2:
+                                        save.Player2.Points[playerpoint.index] = value;
+                                        break;
+                                    case Players.Player3:
+                                        save.Player3.Points[playerpoint.index] = value;
+                                        break;
+                                    case Players.Player4:
+                                        save.Player4.Points[playerpoint.index] = value;
+                                        break;
+                                }
+                            }
+                        }
+
+                        break;
+
+                    case ActionButton.Delete:
+
+                        switch(playerpoint.player)
+                        {
+                            case Players.Player1:
+                                save.Player1.Points.RemoveAt(playerpoint.index);
+                                break;
+                            case Players.Player2:
+                                save.Player2.Points.RemoveAt(playerpoint.index);
+                                break;
+                            case Players.Player3:
+                                save.Player3.Points.RemoveAt(playerpoint.index);
+                                break;
+                            case Players.Player4:
+                                save.Player4.Points.RemoveAt(playerpoint.index);
+                                break;
+                        }
+
+                        break;
+                }
+
+                Save();
+                Update();
+            }
         }
     }
 }

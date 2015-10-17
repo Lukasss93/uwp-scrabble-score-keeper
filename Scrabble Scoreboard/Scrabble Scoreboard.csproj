@@ -87,6 +87,8 @@
     <Compile Include="Classes\MessageDialogPlayer.xaml.cs">
       <DependentUpon>MessageDialogPlayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\Enums.cs" />
+    <Compile Include="Classes\PlayerPoint.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
