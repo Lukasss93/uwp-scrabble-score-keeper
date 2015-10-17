@@ -23,14 +23,34 @@ namespace Scrabble_Scoreboard.Classes
     {
         public MessageDialogPlayerResult Result { get; private set; }
 
-        public MessageDialogPlayer(string player_num)
+        public MessageDialogPlayer(Players player, JsonSavePlayer saveplayer)
         {
             this.InitializeComponent();
             Result = new MessageDialogPlayerResult();
             Result.status = false;
 
-            name.Header = "Inserisci un nome per il Player " + player_num;
-            color.Header = "Scegli un colore per il Player " + player_num;
+
+            switch(player)
+            {
+                case Players.Player1:
+                    name.Header = "Inserisci un nome per il Player 1";
+                    color.Header = "Scegli un colore per il Player 1";
+                    break;
+                case Players.Player2:
+                    name.Header = "Inserisci un nome per il Player 2";
+                    color.Header = "Scegli un colore per il Player 2";
+                    break;
+                case Players.Player3:
+                    name.Header = "Inserisci un nome per il Player 3";
+                    color.Header = "Scegli un colore per il Player 3";
+                    break;
+                case Players.Player4:
+                    name.Header = "Inserisci un nome per il Player 3";
+                    color.Header = "Scegli un colore per il Player 3";
+                    break;
+            }
+
+            name.Text = saveplayer.Name;
 
             List<AppColors> colors = new List<AppColors>();
             colors.Add(new AppColors(new SolidColorBrush(Color.FromArgb(255, 11, 108, 248)), "Blu"));
@@ -39,7 +59,26 @@ namespace Scrabble_Scoreboard.Classes
             colors.Add(new AppColors(new SolidColorBrush(Color.FromArgb(255, 221, 188, 0)), "Giallo"));
 
             color.ItemsSource = colors;
-            color.SelectedIndex = 0;
+
+
+            if(saveplayer.PlayerColor.Equals(Color.FromArgb(255, 11, 108, 248)))
+            {
+                color.SelectedIndex = 0;
+            }
+            else if(saveplayer.PlayerColor.Equals(Color.FromArgb(255, 201, 0, 0)))
+            {
+                color.SelectedIndex = 1;
+            }
+            else if(saveplayer.PlayerColor.Equals(Color.FromArgb(255, 0, 183, 3)))
+            {
+                color.SelectedIndex = 2;
+            }
+            else if(saveplayer.PlayerColor.Equals(Color.FromArgb(255, 221, 188, 0)))
+            {
+                color.SelectedIndex = 3;
+            }
+
+            name.GotFocus += (s, e) => { name.SelectAll(); };
         }
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

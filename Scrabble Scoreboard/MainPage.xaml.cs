@@ -48,6 +48,7 @@ namespace Scrabble_Scoreboard
             p4_add.Click += (sender, e) => { AddPoints(Players.Player4); };
 
             ab_clear.Click += Ab_clear_Click;
+            
         }
 
         private void Headeractionbutton_Click(object sender, RoutedEventArgs e)
@@ -101,16 +102,17 @@ namespace Scrabble_Scoreboard
         
         private async void EditName(Players player)
         {
-            string player_num = "1";
+            JsonSavePlayer saveplayer=null;
+            
             switch(player)
             {
-                case Players.Player1: player_num = "1"; break;
-                case Players.Player2: player_num = "2"; break;
-                case Players.Player3: player_num = "3"; break;
-                case Players.Player4: player_num = "4"; break;
+                case Players.Player1: saveplayer = save.Player1; break;
+                case Players.Player2: saveplayer = save.Player2; break;
+                case Players.Player3: saveplayer = save.Player3; break;
+                case Players.Player4: saveplayer = save.Player4; break;
             }
 
-            MessageDialogPlayer dialog = new MessageDialogPlayer(player_num);
+            MessageDialogPlayer dialog = new MessageDialogPlayer(player, saveplayer);
             await dialog.ShowAsync();
 
             if(dialog.Result.status)
@@ -312,8 +314,8 @@ namespace Scrabble_Scoreboard
             }
 
             //scrollo fino alla fine
-            //TODO: non funziona bene
-            myscroll.ChangeView(0.0f, double.MaxValue, 1.0f);
+            myscroll.ChangeView(0.0f, myscroll.ExtentHeight, 1.0f);
+            myscroll.UpdateLayout();
 
         }
 
