@@ -2,6 +2,7 @@
 using Aura.Net.Serializer;
 using Aura.Net.Storage;
 using Scrabble_Scoreboard.Classes;
+using Scrabble_Scoreboard.Pages;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

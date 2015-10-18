@@ -1,0 +1,54 @@
+﻿<Page
+    x:Class="Scrabble_Scoreboard.Pages.HowToWorks"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Scrabble_Scoreboard.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="HEADER" Background="{ThemeResource PhoneChromeBrush}">
+
+            <Grid x:Name="titlebar" Grid.Row="0" Height="60">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <FontIcon Glyph="&#xE11B;" FontFamily="ms-appx:/Fonts/segmdl2.ttf#Segoe MDL2 Assets" FontSize="18.667" Foreground="{ThemeResource PhoneAccentBrush}"/>
+                <TextBlock Text="AIUTO" Style="{StaticResource TitleTextBlockStyle}" Grid.Column="1" VerticalAlignment="Center" FontWeight="Bold" Margin="10,0"/>
+            </Grid>
+
+        </Grid>
+        <Grid x:Name="BODY" Grid.Row="1">
+            <ScrollViewer>
+                <StackPanel VerticalAlignment="Top" Margin="19">
+                    <TextBlock x:Name="textBlock" TextWrapping="Wrap" FontFamily="Segoe WP" FontSize="20" FontWeight="Light">
+                    	<Run Text="Tieni traccia dei tuoi punteggi in Scrabble con facilità!"/>
+                    	<LineBreak/>
+                    	<LineBreak/>
+                    	<Run Text="Funzionalità:" FontWeight="Bold"/>
+                    	<LineBreak/>
+                    	<Run Text="- Fino a 4 giocatori!"/>
+                    	<LineBreak/>
+                    	<Run Text="- Colore personalizzato per ogni giocatore"/>
+                        <LineBreak/>
+                    	<Run Text="- Pulsante azione per modificare o eliminare un punteggio in modo veloce"/>
+                    	<LineBreak/>
+                    	<Run Text="- Salvataggio automatico ad ogni azione"/>
+                    	<LineBreak/>
+                    	<LineBreak/>
+                    	<Run Text="Nota:" FontWeight="Bold"/>
+                        <LineBreak/>
+                    	<Run Text="Questa app non è affiliata con il gioco da tavolo Scrabble né con i suoi creatori."/>
+                    </TextBlock>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Page>

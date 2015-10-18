@@ -21,7 +21,7 @@ using Aura.Net.Storage;
 using Scrabble_Scoreboard.Classes;
 using Aura.Net.Serializer;
 
-namespace Scrabble_Scoreboard
+namespace Scrabble_Scoreboard.Pages
 {
     public sealed partial class MainPage : Page
     {
@@ -48,6 +48,7 @@ namespace Scrabble_Scoreboard
             p4_add.Click += (sender, e) => { AddPoints(Players.Player4); };
 
             ab_clear.Click += Ab_clear_Click;
+            ab_help.Click += (s, e) => { Frame.Navigate(typeof(HowToWorks)); };
             
         }
 
