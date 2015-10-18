@@ -45,8 +45,8 @@ namespace Scrabble_Scoreboard.Classes
                     color.Header = "Scegli un colore per il Player 3";
                     break;
                 case Players.Player4:
-                    name.Header = "Inserisci un nome per il Player 3";
-                    color.Header = "Scegli un colore per il Player 3";
+                    name.Header = "Inserisci un nome per il Player 4";
+                    color.Header = "Scegli un colore per il Player 4";
                     break;
             }
 

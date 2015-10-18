@@ -85,18 +85,22 @@ namespace Scrabble_Scoreboard
         }
 
         #region AZIONI COMMAND BAR
-        private void Ab_clear_Click(object sender, RoutedEventArgs e)
+        private async void Ab_clear_Click(object sender, RoutedEventArgs e)
         {
-            JsonSave newsave = new JsonSave();
-            newsave.Player1.Name = "Player 1";
-            newsave.Player2.Name = "Player 2";
-            newsave.Player3.Name = "Player 3";
-            newsave.Player4.Name = "Player 4";
-            SettingsHelper.Set("save", Json.Serialize(newsave));
+            if(await MessageDialogHelper.Confirm("Sicuro di voler pulire tutto?\nTutti i salvataggi verranno eliminati.", "Attenzione"))
+            {
 
-            save = Json.Deserialize<JsonSave>((string)SettingsHelper.Get("save"));
+                JsonSave newsave = new JsonSave();
+                newsave.Player1.Name = "Player 1";
+                newsave.Player2.Name = "Player 2";
+                newsave.Player3.Name = "Player 3";
+                newsave.Player4.Name = "Player 4";
+                SettingsHelper.Set("save", Json.Serialize(newsave));
 
-            Update();
+                save = Json.Deserialize<JsonSave>((string)SettingsHelper.Get("save"));
+
+                Update();
+            }
         }
         #endregion
         
