@@ -20,6 +20,9 @@ using System.Diagnostics;
 using Aura.Net.Storage;
 using Scrabble_Scoreboard.Classes;
 using Aura.Net.Serializer;
+using Aura.Net.Pages;
+using Aura.Net.Controls;
+using Aura.Net.Common;
 
 namespace Scrabble_Scoreboard.Pages
 {
@@ -49,7 +52,51 @@ namespace Scrabble_Scoreboard.Pages
 
             ab_clear.Click += Ab_clear_Click;
             ab_help.Click += (s, e) => { Frame.Navigate(typeof(HowToWorks)); };
-            
+            ab_info.Click += (s, e) => 
+            {
+                List<Changelog> changes = new List<Changelog>();
+                changes.Add(new Changelog(
+                    new Version(1,0,0,0), 
+                    new List<string>()
+                    {
+                        "Versione iniziale"
+                    }
+                ));
+
+                List<MyApps> myapp = new List<MyApps>();
+                myapp.Add(new MyApps("04d27365-fe13-4f2a-85f7-222dec8c0392", new Uri("ms-appx:///Assets/app/mojang_service_statuses.png"), "Mojang Service Statuses"));
+                myapp.Add(new MyApps("858ce4f2-86c1-41c7-8733-f2d0009add2d", new Uri("ms-appx:///Assets/app/cookie.png"), "Cookie Clicker"));
+                myapp.Add(new MyApps("becfe05d-2aa6-48c4-ba9b-2b1817366f5a", new Uri("ms-appx:///Assets/app/files_locker.png"), "Files Locker"));
+                myapp.Add(new MyApps("c57e88d1-8ff9-4249-945a-9aeac1e7af51", new Uri("ms-appx:///Assets/app/brt.png"), "BRT"));
+                myapp.Add(new MyApps("2787dc44-ffae-4594-b1ca-a507c5748d80", new Uri("ms-appx:///Assets/app/suonerie.png"), "Ringtones++"));
+
+                InformationOptions iopt = new InformationOptions();
+                iopt.AboutMePage.Avatar = new Uri("ms-appx:///Assets/img/lukasss93.png");
+                iopt.AboutMePage.FullName = "Luca Patera";
+                iopt.AboutMePage.Nickname = "@Lukasss93";
+                iopt.AboutMePage.Links = new List<Link>()
+                {
+                    new Link("email","windowsphone@lucapatera.it",new Uri("mailto:windowsphone@lucapatera.it")),
+                    new Link("sito web","www.lucapatera.it",new Uri("http://www.lucapatera.it")),
+                    new Link("facebook","www.facebook.com/Lukasss93Dev",new Uri("http://www.facebook.com/Lukasss93Dev")),
+                    new Link("twitter","www.twitter.com/JonnyRosworth",new Uri("http://twitter.com/JonnyRosworth")),
+                };
+
+                iopt.ChangelogPage.AppLogo = new Uri("ms-appx:///Assets/img/logo.png");
+                iopt.ChangelogPage.AppName = "Scrabble Score Keeper";
+                iopt.ChangelogPage.Changes = changes;
+
+                iopt.MyAppsList = myapp;
+
+                iopt.ProPage.ProEnabled = false;
+
+                string serializedopt = Json.Serialize(iopt);
+                Debug.WriteLine(serializedopt);
+
+
+                Frame.Navigate(typeof(Aura.Net.Pages.Information), serializedopt);
+            };
+
         }
 
         private void Headeractionbutton_Click(object sender, RoutedEventArgs e)
@@ -171,7 +218,7 @@ namespace Scrabble_Scoreboard.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            Debug.WriteLine((string)SettingsHelper.Get("save"));
+            //Debug.WriteLine((string)SettingsHelper.Get("save"));
 
             save = Json.Deserialize<JsonSave>((string)SettingsHelper.Get("save"));
             Update();

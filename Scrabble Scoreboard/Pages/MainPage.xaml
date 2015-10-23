@@ -17,8 +17,8 @@
             </NavigationThemeTransition>
         </TransitionCollection>
     </Page.Transitions>
-    
-    
+
+
     <Page.Resources>
         <Thickness x:Key="PhoneBorderThickness">2.5</Thickness>
         <FontFamily x:Key="PhoneFontFamilyNormal">Segoe WP</FontFamily>
@@ -111,7 +111,7 @@
                     <FontIcon Glyph="&#xE11B;" FontFamily="{StaticResource Windows10Icons}"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton Label="info">
+            <AppBarButton x:Name="ab_info" Label="info">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="i"/>
                 </AppBarButton.Icon>
@@ -136,7 +136,8 @@
                 </Grid.ColumnDefinitions>
                 <FontIcon Glyph="&#xE739;" FontFamily="{StaticResource Windows10Icons}" FontSize="29.333" Foreground="{ThemeResource PhoneAccentBrush}"/>
                 <FontIcon Glyph="A" FontFamily="{StaticResource Windows10Icons}" FontSize="18.667" Foreground="{ThemeResource PhoneAccentBrush}" Margin="0,0,0,5"/>
-                <TextBlock Text="SCRABBLE SCOREBOARD" Style="{StaticResource TitleTextBlockStyle}" Grid.Column="1" VerticalAlignment="Center" FontWeight="Bold" Margin="10,0"/>
+                <FontIcon Glyph="1" FontFamily="{StaticResource Windows10Icons}" FontSize="6.667" Foreground="{ThemeResource PhoneAccentBrush}" Margin="19,16,0,0"/>
+                <TextBlock Text="SCRABBLE SCORE KEEPER" Style="{StaticResource TitleTextBlockStyle}" Grid.Column="1" VerticalAlignment="Center" FontWeight="Bold" Margin="10,0"/>
                 <Button x:Name="headeractionbutton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Style="{StaticResource PlayerButton}" MinWidth="50" MinHeight="30" FontFamily="{StaticResource Windows10Icons}" FontSize="21.333"/>
             </Grid>
 

@@ -103,7 +103,14 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\img\scrabble.a.png" />
+    <Content Include="Assets\app\brt.png" />
+    <Content Include="Assets\app\cookie.png" />
+    <Content Include="Assets\app\files_locker.png" />
+    <Content Include="Assets\app\mojang_service_statuses.png" />
+    <Content Include="Assets\app\suonerie.png" />
+    <Content Include="Assets\app\taboo.png" />
+    <Content Include="Assets\img\logo.png" />
+    <Content Include="Assets\img\lukasss93.png" />
     <Content Include="Assets\Logo.scale-240.png" />
     <Content Include="Assets\SmallLogo.scale-240.png" />
     <Content Include="Assets\SplashScreen.scale-240.png" />

@@ -36,6 +36,7 @@ namespace Scrabble_Scoreboard
         {
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
+            this.Resuming += App_Resuming;
             HardwareButtons.BackPressed += HardwareButtons_BackPressed;
             ContinuationManager = new ContinuationManager();
 
@@ -47,6 +48,7 @@ namespace Scrabble_Scoreboard
             save.Player4.Name = "Player 4";
             SettingsHelper.Initialize("save", Json.Serialize(save));
         }
+        
 
         private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
         {
@@ -96,11 +98,25 @@ namespace Scrabble_Scoreboard
                 RootFrame.Navigate(typeof(MainPage), e.Arguments);
             }
 
+            OnVisibleBoundsNavigated();
+            OnVisibleBoundsChanged(null, null);
+
             // Ensure the current window is active
             Window.Current.Activate();
         }
 
+        private void App_Resuming(object sender, object e)
+        {
+            OnVisibleBoundsNavigated();
+            OnVisibleBoundsChanged(null, null);
+        }
+
         private void RootFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            OnVisibleBoundsNavigated();
+        }
+
+        public void OnVisibleBoundsNavigated()
         {
             //Setting the view bounds to the whole window 
             ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
@@ -113,7 +129,7 @@ namespace Scrabble_Scoreboard
             OnVisibleBoundsChanged(null, null);
         }
 
-        private void OnVisibleBoundsChanged(ApplicationView sender, object args)
+        public void OnVisibleBoundsChanged(ApplicationView sender, object args)
         {
             var bounds = ApplicationView.GetForCurrentView().VisibleBounds;
             var h = Window.Current.Bounds.Height;
@@ -197,6 +213,9 @@ namespace Scrabble_Scoreboard
             {
                 ContinuationManager.Continue(continuationEventArgs);
             }
+
+            OnVisibleBoundsNavigated();
+            OnVisibleBoundsChanged(null, null);
 
             Window.Current.Activate();
         }
