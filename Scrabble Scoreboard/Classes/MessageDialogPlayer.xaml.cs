@@ -22,12 +22,24 @@ namespace Scrabble_Scoreboard.Classes
     public sealed partial class MessageDialogPlayer : ContentDialog
     {
         public MessageDialogPlayerResult Result { get; private set; }
+        private Players player;
+        private List<AppColors> colors = new List<AppColors>()
+        {
+            new AppColors(new SolidColorBrush(Color.FromArgb(255, 11, 108, 248)), "Blu"),
+            new AppColors(new SolidColorBrush(Color.FromArgb(255, 201, 0, 0)), "Rosso"),
+            new AppColors(new SolidColorBrush(Color.FromArgb(255, 0, 183, 3)), "Verde"),
+            new AppColors(new SolidColorBrush(Color.FromArgb(255, 221, 188, 0)), "Giallo"),
+        };
 
-        public MessageDialogPlayer(Players player, JsonSavePlayer saveplayer)
+        public MessageDialogPlayer(Players p, JsonSavePlayer saveplayer)
         {
             this.InitializeComponent();
             Result = new MessageDialogPlayerResult();
             Result.status = false;
+
+            reset.Click += Reset_Click;
+
+            player = p;
 
 
             switch(player)
@@ -50,14 +62,7 @@ namespace Scrabble_Scoreboard.Classes
                     break;
             }
 
-            name.Text = saveplayer.Name;
-
-            List<AppColors> colors = new List<AppColors>();
-            colors.Add(new AppColors(new SolidColorBrush(Color.FromArgb(255, 11, 108, 248)), "Blu"));
-            colors.Add(new AppColors(new SolidColorBrush(Color.FromArgb(255, 201, 0, 0)), "Rosso"));
-            colors.Add(new AppColors(new SolidColorBrush(Color.FromArgb(255, 0, 183, 3)), "Verde"));
-            colors.Add(new AppColors(new SolidColorBrush(Color.FromArgb(255, 221, 188, 0)), "Giallo"));
-
+            name.Text = saveplayer.Name;            
             color.ItemsSource = colors;
 
 
@@ -79,6 +84,27 @@ namespace Scrabble_Scoreboard.Classes
             }
 
             name.GotFocus += (s, e) => { name.SelectAll(); };
+        }
+
+        private void Reset_Click(object sender, RoutedEventArgs e)
+        {
+            switch(player)
+            {
+                case Players.Player1:
+                    name.Text = "Player 1";
+                    break;
+                case Players.Player2:
+                    name.Text = "Player 2";
+                    break;
+                case Players.Player3:
+                    name.Text = "Player 3";
+                    break;
+                case Players.Player4:
+                    name.Text = "Player 4";
+                    break;
+            }
+
+            color.SelectedIndex = 0;
         }
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

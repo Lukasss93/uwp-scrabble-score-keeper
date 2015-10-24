@@ -99,30 +99,12 @@
             </Setter>
         </Style>
     </Page.Resources>
-    <Page.BottomAppBar>
-        <CommandBar ClosedDisplayMode="Minimal">
-            <AppBarButton x:Name="ab_clear" Label="pulisci">
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xEA99;" FontFamily="{StaticResource Windows10Icons}"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton x:Name="ab_help" Label="aiuto">
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xE11B;" FontFamily="{StaticResource Windows10Icons}"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton x:Name="ab_info" Label="info">
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="i"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
-        </CommandBar>
-    </Page.BottomAppBar>
 
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
@@ -132,13 +114,11 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="60"/>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="60"/>
                 </Grid.ColumnDefinitions>
                 <FontIcon Glyph="&#xE739;" FontFamily="{StaticResource Windows10Icons}" FontSize="29.333" Foreground="{ThemeResource PhoneAccentBrush}"/>
                 <FontIcon Glyph="A" FontFamily="{StaticResource Windows10Icons}" FontSize="18.667" Foreground="{ThemeResource PhoneAccentBrush}" Margin="0,0,0,5"/>
                 <FontIcon Glyph="1" FontFamily="{StaticResource Windows10Icons}" FontSize="6.667" Foreground="{ThemeResource PhoneAccentBrush}" Margin="19,16,0,0"/>
-                <TextBlock Text="SCRABBLE SCORE KEEPER" Style="{StaticResource TitleTextBlockStyle}" Grid.Column="1" VerticalAlignment="Center" FontWeight="Bold" Margin="10,0"/>
-                <Button x:Name="headeractionbutton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Style="{StaticResource PlayerButton}" MinWidth="50" MinHeight="30" FontFamily="{StaticResource Windows10Icons}" FontSize="21.333"/>
+                <TextBlock x:Name="title" Text="SCRABBLE SCORE KEEPER" Style="{StaticResource TitleTextBlockStyle}" Grid.Column="1" VerticalAlignment="Center" FontWeight="Bold" Margin="10,0"/>
             </Grid>
 
         </Grid>
@@ -192,7 +172,7 @@
                 <Button x:Name="p4_add" Content="+" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="80" FontSize="29.333" FontWeight="Bold" Style="{StaticResource PlayerButton}" BorderThickness="0" MinHeight="30" Margin="0" Padding="9.5,0" Grid.Column="3"/>
             </Grid>
         </Grid>
-        <Grid x:Name="FOOTER" Height="62" Grid.Row="2" Margin="0,1">
+        <Grid x:Name="TOTALS" Height="45" Grid.Row="2" Margin="0,1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -211,6 +191,18 @@
             <Grid x:Name="p4_tot_grid" Background="{ThemeResource PhoneAccentBrush}" Grid.Column="3">
                 <TextBlock x:Name="p4_tot" HorizontalAlignment="Center" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" FontFamily="Segoe WP" FontSize="29.333" TextAlignment="Center" Foreground="White"/>
             </Grid>
+        </Grid>
+        <Grid x:Name="MYBAR" Height="60" Grid.Row="3" Background="{ThemeResource PhoneChromeBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="mybar_action" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource PlayerButton}" MinWidth="50" MinHeight="30" FontFamily="{StaticResource Windows10Icons}" FontSize="21.333" Foreground="{ThemeResource PhoneAccentBrush}" Content="&#xE25B;"/>
+            <Button x:Name="mybar_clear" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource PlayerButton}" MinWidth="50" MinHeight="30" FontFamily="{StaticResource Windows10Icons}" FontSize="21.333" Foreground="{ThemeResource PhoneAccentBrush}" Content="&#xEA99;" Grid.Column="1"/>
+            <Button x:Name="mybar_help" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource PlayerButton}" MinWidth="50" MinHeight="30" FontFamily="{StaticResource Windows10Icons}" FontSize="21.333" Foreground="{ThemeResource PhoneAccentBrush}" Content="&#xE11B;" Grid.Column="2"/>
+            <Button x:Name="mybar_info" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource PlayerButton}" MinWidth="50" MinHeight="30" FontFamily="{StaticResource Windows10Icons}" FontSize="21.333" Foreground="{ThemeResource PhoneAccentBrush}" Content="i" Grid.Column="3"/>
         </Grid>
 
     </Grid>

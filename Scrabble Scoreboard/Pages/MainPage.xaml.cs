@@ -23,11 +23,13 @@ using Aura.Net.Serializer;
 using Aura.Net.Pages;
 using Aura.Net.Controls;
 using Aura.Net.Common;
+using System.Threading.Tasks;
 
 namespace Scrabble_Scoreboard.Pages
 {
     public sealed partial class MainPage : Page
     {
+        private static Enough.Async.AsyncLock asyncLock = new Enough.Async.AsyncLock();
         JsonSave save;
         ActionButton actionbutton = ActionButton.None;
 
@@ -36,10 +38,10 @@ namespace Scrabble_Scoreboard.Pages
             this.InitializeComponent();
             this.NavigationCacheMode = NavigationCacheMode.Required;
             titlebar.Margin = Utilities.SetMarginTop(titlebar, StatusBar.GetForCurrentView().OccludedRect.Height);
-
+            
             UpdateActionButtonIcon();
-            headeractionbutton.Click += Headeractionbutton_Click;
-
+            mybar_action.Click += Headeractionbutton_Click;
+            
             p1_name.Click += (sender, e) => { EditName(Players.Player1); };
             p2_name.Click += (sender, e) => { EditName(Players.Player2); };
             p3_name.Click += (sender, e) => { EditName(Players.Player3); };
@@ -50,9 +52,9 @@ namespace Scrabble_Scoreboard.Pages
             p3_add.Click += (sender, e) => { AddPoints(Players.Player3); };
             p4_add.Click += (sender, e) => { AddPoints(Players.Player4); };
 
-            ab_clear.Click += Ab_clear_Click;
-            ab_help.Click += (s, e) => { Frame.Navigate(typeof(HowToWorks)); };
-            ab_info.Click += (s, e) => 
+            mybar_clear.Click += Ab_clear_Click;
+            mybar_help.Click += (s, e) => { Frame.Navigate(typeof(HowToWorks)); };
+            mybar_info.Click += (s, e) => 
             {
                 List<Changelog> changes = new List<Changelog>();
                 changes.Add(new Changelog(
@@ -79,7 +81,7 @@ namespace Scrabble_Scoreboard.Pages
                     new Link("email","windowsphone@lucapatera.it",new Uri("mailto:windowsphone@lucapatera.it")),
                     new Link("sito web","www.lucapatera.it",new Uri("http://www.lucapatera.it")),
                     new Link("facebook","www.facebook.com/Lukasss93Dev",new Uri("http://www.facebook.com/Lukasss93Dev")),
-                    new Link("twitter","www.twitter.com/JonnyRosworth",new Uri("http://twitter.com/JonnyRosworth")),
+                    new Link("twitter","www.twitter.com/Lukasss93",new Uri("http://twitter.com/Lukasss93")),
                 };
 
                 iopt.ChangelogPage.AppLogo = new Uri("ms-appx:///Assets/img/logo.png");
@@ -98,7 +100,7 @@ namespace Scrabble_Scoreboard.Pages
             };
 
         }
-
+        
         private void Headeractionbutton_Click(object sender, RoutedEventArgs e)
         {
             if(actionbutton==ActionButton.None)
@@ -121,13 +123,13 @@ namespace Scrabble_Scoreboard.Pages
             switch(actionbutton)
             {
                 case ActionButton.None:
-                    headeractionbutton.Content = "";
+                    mybar_action.Content = "";
                     break;
                 case ActionButton.Edit:
-                    headeractionbutton.Content = "";
+                    mybar_action.Content = "";
                     break;
                 case ActionButton.Delete:
-                    headeractionbutton.Content = "";
+                    mybar_action.Content = "";
                     break;
             }
         }
@@ -154,64 +156,71 @@ namespace Scrabble_Scoreboard.Pages
         
         private async void EditName(Players player)
         {
-            JsonSavePlayer saveplayer=null;
-            
-            switch(player)
+            using(await asyncLock.LockAsync())
             {
-                case Players.Player1: saveplayer = save.Player1; break;
-                case Players.Player2: saveplayer = save.Player2; break;
-                case Players.Player3: saveplayer = save.Player3; break;
-                case Players.Player4: saveplayer = save.Player4; break;
-            }
+                JsonSavePlayer saveplayer = null;
 
-            MessageDialogPlayer dialog = new MessageDialogPlayer(player, saveplayer);
-            await dialog.ShowAsync();
-
-            if(dialog.Result.status)
-            {
                 switch(player)
                 {
-                    case Players.Player1: save.Player1.Name = dialog.Result.name; save.Player1.PlayerColor = dialog.Result.color; break;
-                    case Players.Player2: save.Player2.Name = dialog.Result.name; save.Player2.PlayerColor = dialog.Result.color; break;
-                    case Players.Player3: save.Player3.Name = dialog.Result.name; save.Player3.PlayerColor = dialog.Result.color; break;
-                    case Players.Player4: save.Player4.Name = dialog.Result.name; save.Player4.PlayerColor = dialog.Result.color; break;
+                    case Players.Player1: saveplayer = save.Player1; break;
+                    case Players.Player2: saveplayer = save.Player2; break;
+                    case Players.Player3: saveplayer = save.Player3; break;
+                    case Players.Player4: saveplayer = save.Player4; break;
                 }
 
-                Save();
-                Update();
+                MessageDialogPlayer dialog = new MessageDialogPlayer(player, saveplayer);
+                await dialog.ShowAsync();
+
+                if(dialog.Result.status)
+                {
+                    switch(player)
+                    {
+                        case Players.Player1: save.Player1.Name = dialog.Result.name; save.Player1.PlayerColor = dialog.Result.color; break;
+                        case Players.Player2: save.Player2.Name = dialog.Result.name; save.Player2.PlayerColor = dialog.Result.color; break;
+                        case Players.Player3: save.Player3.Name = dialog.Result.name; save.Player3.PlayerColor = dialog.Result.color; break;
+                        case Players.Player4: save.Player4.Name = dialog.Result.name; save.Player4.PlayerColor = dialog.Result.color; break;
+                    }
+
+                    Save();
+                    Update();
+                }
             }
         }
 
         private async void AddPoints(Players player)
         {
-            string player_name="";
-            switch(player)
+            using(await asyncLock.LockAsync())
             {
-                case Players.Player1: player_name = save.Player1.Name == "Player 1" ? "il Player 1" : save.Player1.Name; break;
-                case Players.Player2: player_name = save.Player2.Name == "Player 2" ? "il Player 2" : save.Player2.Name; break;
-                case Players.Player3: player_name = save.Player3.Name == "Player 3" ? "il Player 3" : save.Player3.Name; break;
-                case Players.Player4: player_name = save.Player4.Name == "Player 4" ? "il Player 4" : save.Player4.Name; break;
-            }
-
-            var res = await MessageDialogHelper.DialogTextBox("Inserisci il punteggio per " + player_name, "Inserisci punteggio","","ok","annulla",null,null,InputScopeNameValue.NumberFullWidth);
-            if(res.result)
-            {
-                int value;
-                if(int.TryParse(res.output, out value))
+                string player_name = "";
+                switch(player)
                 {
-                    switch(player)
-                    {
-                        case Players.Player1: save.Player1.Points.Add(value); break;
-                        case Players.Player2: save.Player2.Points.Add(value); break;
-                        case Players.Player3: save.Player3.Points.Add(value); break;
-                        case Players.Player4: save.Player4.Points.Add(value); break;
-                    }
-                    Save();
-                    Update();
+                    case Players.Player1: player_name = save.Player1.Name == "Player 1" ? "il Player 1" : save.Player1.Name; break;
+                    case Players.Player2: player_name = save.Player2.Name == "Player 2" ? "il Player 2" : save.Player2.Name; break;
+                    case Players.Player3: player_name = save.Player3.Name == "Player 3" ? "il Player 3" : save.Player3.Name; break;
+                    case Players.Player4: player_name = save.Player4.Name == "Player 4" ? "il Player 4" : save.Player4.Name; break;
                 }
-                else
+
+                var res = await MessageDialogHelper.DialogTextBox("Inserisci il punteggio per " + player_name, "Inserisci punteggio", "", "ok", "annulla", null, null, InputScopeNameValue.NumberFullWidth);
+                if(res.result)
                 {
-                    MessageDialogHelper.Show("Sono consentiti solo numeri interi.", "Attenzione");
+                    int value;
+                    if(int.TryParse(res.output, out value))
+                    {
+                        switch(player)
+                        {
+                            case Players.Player1: save.Player1.Points.Add(value); break;
+                            case Players.Player2: save.Player2.Points.Add(value); break;
+                            case Players.Player3: save.Player3.Points.Add(value); break;
+                            case Players.Player4: save.Player4.Points.Add(value); break;
+                        }
+                        Save();
+                        Update();
+                        ScrollToBottom();
+                    }
+                    else
+                    {
+                        MessageDialogHelper.Show("Sono consentiti solo numeri interi.", "Attenzione");
+                    }
                 }
             }
         }
@@ -353,21 +362,12 @@ namespace Scrabble_Scoreboard.Pages
             p3_tot.Text = somma3 + "";
             p4_tot.Text = somma4 + "";
 
-            //mostra/nascondi pulsante modifica/elimina
+            //inizializza pulsante azione
             if(save.Player1.Points.Count+save.Player2.Points.Count+save.Player3.Points.Count+save.Player4.Points.Count==0)
             {
-                headeractionbutton.Visibility = Visibility.Collapsed;
                 actionbutton = ActionButton.None;
                 UpdateActionButtonIcon();
             }
-            else
-            {
-                headeractionbutton.Visibility = Visibility.Visible;
-            }
-
-            //scrollo fino alla fine
-            myscroll.ChangeView(0.0f, myscroll.ExtentHeight, 1.0f);
-            myscroll.UpdateLayout();
 
         }
 
@@ -432,6 +432,12 @@ namespace Scrabble_Scoreboard.Pages
                 Save();
                 Update();
             }
+        }
+        
+        private void ScrollToBottom()
+        {
+            myscroll.ChangeView(null, myscroll.ScrollableHeight, null, false);
+            myscroll.UpdateLayout();
         }
     }
 }

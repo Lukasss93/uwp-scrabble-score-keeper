@@ -1,4 +1,5 @@
-﻿using Aura.Net.Common;
+﻿using Aura.Net;
+using Aura.Net.Common;
 using Aura.Net.Serializer;
 using Aura.Net.Storage;
 using Scrabble_Scoreboard.Classes;
@@ -38,6 +39,7 @@ namespace Scrabble_Scoreboard
             this.Suspending += this.OnSuspending;
             this.Resuming += App_Resuming;
             HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+            this.UnhandledException += App_UnhandledException;
             ContinuationManager = new ContinuationManager();
 
 
@@ -48,7 +50,21 @@ namespace Scrabble_Scoreboard
             save.Player4.Name = "Player 4";
             SettingsHelper.Initialize("save", Json.Serialize(save));
         }
-        
+
+        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Debug.WriteLine(
+                "Messaggio: " + e.Exception.Message + "\n" +
+                "Stacktrace: " + e.Exception.StackTrace +
+                "HResult: " + e.Exception.HResult, "Eccezione");
+
+            MessageDialogHelper.Show(
+                "Messaggio: "+e.Exception.Message + "\n" + 
+                "Stacktrace: "+ e.Exception.StackTrace +
+                "HResult: "+e.Exception.HResult,"Eccezione");
+
+            e.Handled = true;
+        }
 
         private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
         {
