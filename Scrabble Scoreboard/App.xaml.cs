@@ -49,18 +49,20 @@ namespace Scrabble_Scoreboard
             save.Player3.Name = "Player 3";
             save.Player4.Name = "Player 4";
             SettingsHelper.Initialize("save", Json.Serialize(save));
+
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("App.xaml.cs");
         }
 
         private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Debug.WriteLine(
-                "Messaggio: " + e.Exception.Message + "\n" +
-                "Stacktrace: " + e.Exception.StackTrace +
+                "Messaggio: " + e.Exception.InnerException.Message + "\n" +
+                "Stacktrace: " + e.Exception.InnerException.StackTrace +
                 "HResult: " + e.Exception.HResult, "Eccezione");
 
             MessageDialogHelper.Show(
-                "Messaggio: "+e.Exception.Message + "\n" + 
-                "Stacktrace: "+ e.Exception.StackTrace +
+                "Messaggio: "+e.Exception.InnerException.Message + "\n" + 
+                "Stacktrace: "+ e.Exception.InnerException.StackTrace +
                 "HResult: "+e.Exception.HResult,"Eccezione");
 
             e.Handled = true;
@@ -116,6 +118,9 @@ namespace Scrabble_Scoreboard
 
             OnVisibleBoundsNavigated();
             OnVisibleBoundsChanged(null, null);
+
+            
+            GoogleAnalytics.EasyTracker.GetTracker().SendEvent("App.xaml.cs", "OnLaunched", null, 0);
 
             // Ensure the current window is active
             Window.Current.Activate();
@@ -196,6 +201,7 @@ namespace Scrabble_Scoreboard
         private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             Debug.WriteLine("OnSuspending");
+            GoogleAnalytics.EasyTracker.GetTracker().SendEvent("App.xaml.cs", "OnSuspending", null, 0);
 
             var deferral = e.SuspendingOperation.GetDeferral();
             await SuspensionManager.SaveAsync();

@@ -24,6 +24,7 @@ using Aura.Net.Pages;
 using Aura.Net.Controls;
 using Aura.Net.Common;
 using System.Threading.Tasks;
+using Aura.Net.Localization;
 
 namespace Scrabble_Scoreboard.Pages
 {
@@ -38,7 +39,9 @@ namespace Scrabble_Scoreboard.Pages
             this.InitializeComponent();
             this.NavigationCacheMode = NavigationCacheMode.Required;
             titlebar.Margin = Utilities.SetMarginTop(titlebar, StatusBar.GetForCurrentView().OccludedRect.Height);
-            
+
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("Mainpage.xaml.cs");
+
             UpdateActionButtonIcon();
             mybar_action.Click += Headeractionbutton_Click;
             
@@ -53,15 +56,20 @@ namespace Scrabble_Scoreboard.Pages
             p4_add.Click += (sender, e) => { AddPoints(Players.Player4); };
 
             mybar_clear.Click += Ab_clear_Click;
-            mybar_help.Click += (s, e) => { Frame.Navigate(typeof(HowToWorks)); };
+            mybar_help.Click += (s, e) => 
+            {
+                GoogleAnalytics.EasyTracker.GetTracker().SendEvent("Mainpage.xaml.cs", "mybar_help.Click", null, 0);
+                Frame.Navigate(typeof(HowToWorks));
+            };
             mybar_info.Click += (s, e) => 
             {
+                GoogleAnalytics.EasyTracker.GetTracker().SendEvent("Mainpage.xaml.cs", "mybar_info.Click", null, 0);
                 List<Changelog> changes = new List<Changelog>();
                 changes.Add(new Changelog(
-                    new Version(1,0,0,0), 
+                    new Version(1, 0, 0, 0),
                     new List<string>()
                     {
-                        "Versione iniziale"
+                        Translate.Get("change_001")
                     }
                 ));
 
@@ -73,23 +81,29 @@ namespace Scrabble_Scoreboard.Pages
                 myapp.Add(new MyApps("2787dc44-ffae-4594-b1ca-a507c5748d80", new Uri("ms-appx:///Assets/app/suonerie.png"), "Ringtones++"));
 
                 InformationOptions iopt = new InformationOptions();
+                iopt.AboutMePage.Header = Translate.Get("aboutme");
                 iopt.AboutMePage.Avatar = new Uri("ms-appx:///Assets/img/lukasss93.png");
                 iopt.AboutMePage.FullName = "Luca Patera";
                 iopt.AboutMePage.Nickname = "@Lukasss93";
                 iopt.AboutMePage.Links = new List<Link>()
                 {
-                    new Link("email","windowsphone@lucapatera.it",new Uri("mailto:windowsphone@lucapatera.it")),
-                    new Link("sito web","www.lucapatera.it",new Uri("http://www.lucapatera.it")),
+                    new Link(Translate.Get("email"),"windowsphone@lucapatera.it",new Uri("mailto:windowsphone@lucapatera.it")),
+                    new Link(Translate.Get("website"),"www.lucapatera.it",new Uri("http://www.lucapatera.it")),
                     new Link("facebook","www.facebook.com/Lukasss93Dev",new Uri("http://www.facebook.com/Lukasss93Dev")),
                     new Link("twitter","www.twitter.com/Lukasss93",new Uri("http://twitter.com/Lukasss93")),
                 };
 
+                iopt.ChangelogPage.Header = Translate.Get("changelog");
                 iopt.ChangelogPage.AppLogo = new Uri("ms-appx:///Assets/img/logo.png");
                 iopt.ChangelogPage.AppName = "Scrabble Score Keeper";
                 iopt.ChangelogPage.Changes = changes;
+                iopt.ChangelogPage.Current = Translate.Get("current");
+                iopt.ChangelogPage.Rate = Translate.Get("rate");
 
-                iopt.MyAppsList = myapp;
+                iopt.MyAppsPage.Header = Translate.Get("myapps");
+                iopt.MyAppsPage.MyAppsList = myapp;
 
+                iopt.ProPage.Header = Translate.Get("pro");
                 iopt.ProPage.ProEnabled = false;
 
                 string serializedopt = Json.Serialize(iopt);
@@ -133,11 +147,12 @@ namespace Scrabble_Scoreboard.Pages
                     break;
             }
         }
-
-        #region AZIONI COMMAND BAR
+        
         private async void Ab_clear_Click(object sender, RoutedEventArgs e)
         {
-            if(await MessageDialogHelper.Confirm("Sicuro di voler pulire tutto?\nTutti i salvataggi verranno eliminati.", "Attenzione"))
+            GoogleAnalytics.EasyTracker.GetTracker().SendEvent("Mainpage.xaml.cs", "Ab_clear_Click", null, 0);
+
+            if(await MessageDialogHelper.Confirm(Translate.Get("clear_1")+"\n"+Translate.Get("clear_2"), Translate.Get("warning"),Translate.Get("ok"),Translate.Get("cancel")))
             {
 
                 JsonSave newsave = new JsonSave();
@@ -152,7 +167,6 @@ namespace Scrabble_Scoreboard.Pages
                 Update();
             }
         }
-        #endregion
         
         private async void EditName(Players player)
         {
@@ -191,16 +205,32 @@ namespace Scrabble_Scoreboard.Pages
         {
             using(await asyncLock.LockAsync())
             {
-                string player_name = "";
+                string phrase = "";
                 switch(player)
                 {
-                    case Players.Player1: player_name = save.Player1.Name == "Player 1" ? "il Player 1" : save.Player1.Name; break;
-                    case Players.Player2: player_name = save.Player2.Name == "Player 2" ? "il Player 2" : save.Player2.Name; break;
-                    case Players.Player3: player_name = save.Player3.Name == "Player 3" ? "il Player 3" : save.Player3.Name; break;
-                    case Players.Player4: player_name = save.Player4.Name == "Player 4" ? "il Player 4" : save.Player4.Name; break;
+                    case Players.Player1:
+                        phrase = save.Player1.Name == "Player 1" ?
+                            String.Format(Translate.Get("enter_score_player_generic"), "Player 1") :
+                            String.Format(Translate.Get("enter_score_player_name"), save.Player1.Name);
+                        break;
+                    case Players.Player2:
+                        phrase = save.Player2.Name == "Player 2" ?
+                            String.Format(Translate.Get("enter_score_player_generic"), "Player 2") :
+                            String.Format(Translate.Get("enter_score_player_name"), save.Player2.Name);
+                        break;
+                    case Players.Player3:
+                        phrase = save.Player3.Name == "Player 3" ?
+                            String.Format(Translate.Get("enter_score_player_generic"), "Player 3") :
+                            String.Format(Translate.Get("enter_score_player_name"), save.Player3.Name);
+                        break;
+                    case Players.Player4:
+                        phrase = save.Player4.Name == "Player 4" ?
+                            String.Format(Translate.Get("enter_score_player_generic"), "Player 4") :
+                            String.Format(Translate.Get("enter_score_player_name"), save.Player4.Name);
+                        break;
                 }
-
-                var res = await MessageDialogHelper.DialogTextBox("Inserisci il punteggio per " + player_name, "Inserisci punteggio", "", "ok", "annulla", null, null, InputScopeNameValue.NumberFullWidth);
+                
+                var res = await MessageDialogHelper.DialogTextBox(phrase, Translate.Get("enter_score"), "", Translate.Get("ok"), Translate.Get("cancel"), null, null, InputScopeNameValue.NumberFullWidth);
                 if(res.result)
                 {
                     int value;
@@ -219,7 +249,7 @@ namespace Scrabble_Scoreboard.Pages
                     }
                     else
                     {
-                        MessageDialogHelper.Show("Sono consentiti solo numeri interi.", "Attenzione");
+                        MessageDialogHelper.Show(Translate.Get("allowed_int_num"), Translate.Get("warning"));
                     }
                 }
             }
@@ -228,6 +258,7 @@ namespace Scrabble_Scoreboard.Pages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             //Debug.WriteLine((string)SettingsHelper.Get("save"));
+            GoogleAnalytics.EasyTracker.GetTracker().SendEvent("Mainpage.xaml.cs", "OnNavigatedTo", null, 0);
 
             save = Json.Deserialize<JsonSave>((string)SettingsHelper.Get("save"));
             Update();
@@ -382,7 +413,7 @@ namespace Scrabble_Scoreboard.Pages
                 {
                     case ActionButton.Edit:
 
-                        var res = await MessageDialogHelper.DialogTextBox("Inserisci il nuovo valore", "Modifica valore", (string)thisbutton.Content);
+                        var res = await MessageDialogHelper.DialogTextBox(Translate.Get("edit_text"), Translate.Get("edit_title"), (string)thisbutton.Content,Translate.Get("ok"),Translate.Get("cancel"));
                         if(res.result)
                         {
                             int value;

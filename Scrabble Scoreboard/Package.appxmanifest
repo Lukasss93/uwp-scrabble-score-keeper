@@ -3,7 +3,7 @@
   <Identity Name="8c55f1a8-7afa-449e-bc5f-aaf086d96676" Publisher="CN=LucaFisso" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="8c55f1a8-7afa-449e-bc5f-aaf086d96676" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>Scrabble Scoreboard</DisplayName>
+    <DisplayName>Scrabble Score Keeper</DisplayName>
     <PublisherDisplayName>LucaFisso</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
