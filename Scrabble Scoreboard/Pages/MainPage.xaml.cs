@@ -66,6 +66,14 @@ namespace Scrabble_Scoreboard.Pages
                 GoogleAnalytics.EasyTracker.GetTracker().SendEvent("Mainpage.xaml.cs", "mybar_info.Click", null, 0);
                 List<Changelog> changes = new List<Changelog>();
                 changes.Add(new Changelog(
+                    new Version(1, 1, 0, 0),
+                    new List<string>()
+                    {
+                        Translate.Get("change_002")
+                    }
+                ));
+
+                changes.Add(new Changelog(
                     new Version(1, 0, 0, 0),
                     new List<string>()
                     {
@@ -413,7 +421,7 @@ namespace Scrabble_Scoreboard.Pages
                 {
                     case ActionButton.Edit:
 
-                        var res = await MessageDialogHelper.DialogTextBox(Translate.Get("edit_text"), Translate.Get("edit_title"), (string)thisbutton.Content,Translate.Get("ok"),Translate.Get("cancel"));
+                        var res = await MessageDialogHelper.DialogTextBox(Translate.Get("edit_text"), Translate.Get("edit_title"), (string)thisbutton.Content,Translate.Get("ok"),Translate.Get("cancel"),null,null, InputScopeNameValue.NumberFullWidth);
                         if(res.result)
                         {
                             int value;
@@ -434,6 +442,10 @@ namespace Scrabble_Scoreboard.Pages
                                         save.Player4.Points[playerpoint.index] = value;
                                         break;
                                 }
+                            }
+                            else
+                            {
+                                MessageDialogHelper.Show(Translate.Get("allowed_int_num"), Translate.Get("warning"));
                             }
                         }
 

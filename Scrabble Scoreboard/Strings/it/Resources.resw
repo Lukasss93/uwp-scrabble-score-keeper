@@ -169,4 +169,7 @@
 		<data name="note_desc" xml:space="preserve">
 			<value>Questa app non è affiliata con il gioco da tavolo Scrabble né con i suoi creatori.</value>
 		</data>
+		<data name="change_002" xml:space="preserve">
+			<value>Bug fix</value>
+		</data>
 		</root>

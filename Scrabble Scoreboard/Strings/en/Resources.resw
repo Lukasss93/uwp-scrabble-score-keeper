@@ -169,4 +169,7 @@
 		<data name="note_desc" xml:space="preserve">
 			<value>This apps is not affiliated with the trademarked Scrabble board game nor its creators.</value>
 		</data>
+		<data name="change_002" xml:space="preserve">
+			<value>Bug fix</value>
+		</data>
 		</root>
