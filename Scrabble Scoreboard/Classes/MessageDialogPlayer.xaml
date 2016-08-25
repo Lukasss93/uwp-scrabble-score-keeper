@@ -27,7 +27,10 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <Button x:Name="reset" Content="reimposta" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <Button x:Name="reset" 
+                Content="reimposta" 
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch"/>
 
         <!-- Corpo del contenuto -->
     </StackPanel>

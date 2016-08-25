@@ -13,11 +13,4 @@ namespace Scrabble_Scoreboard.Classes
         Player3,
         Player4
     }
-
-    public enum ActionButton
-    {
-        None,
-        Edit,
-        Delete
-    }
 }

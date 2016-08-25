@@ -1,22 +1,10 @@
-﻿using Aura.Net;
-using Aura.Net.Localization;
-using Aura.Net.Resources;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using AuraRT.Display;
+using AuraRT.Globalization;
+using AuraRT.Imaging;
 using Windows.UI.Text;
 using Windows.UI.ViewManagement;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Documents;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // Il modello di elemento per la pagina vuota è documentato all'indirizzo http://go.microsoft.com/fwlink/?LinkID=390556
@@ -31,32 +19,32 @@ namespace Scrabble_Scoreboard.Pages
         public HowToWorks()
         {
             this.InitializeComponent();
-            titlebar.Margin = Utilities.SetMarginTop(titlebar, StatusBar.GetForCurrentView().OccludedRect.Height);
+            titlebar.Margin = StatusBarHelper.SetTopMargin(titlebar);
 
             GoogleAnalytics.EasyTracker.GetTracker().SendView("HowToWorks.xaml.cs");
 
-            title.Text = Translate.Get("help");
+            title.Text = LocalizedString.Get("help");
 
             desc.Inlines.Clear();
-            desc.Inlines.Add(new Run() { Text=Translate.Get("help_desc") });
+            desc.Inlines.Add(new Run() { Text=LocalizedString.Get("help_desc") });
             desc.Inlines.Add(new LineBreak());
             desc.Inlines.Add(new LineBreak());
 
-            desc.Inlines.Add(new Run() { Text = Translate.Get("features")+":", FontWeight=FontWeights.Bold, Foreground=MyColors.PhoneAccentBrush });
+            desc.Inlines.Add(new Run() { Text = LocalizedString.Get("features")+":", FontWeight=FontWeights.Bold, Foreground=ColorUtilities.PhoneAccentBrush });
             desc.Inlines.Add(new LineBreak());
-            desc.Inlines.Add(new Run() { Text = "• " + Translate.Get("feature_1") });
+            desc.Inlines.Add(new Run() { Text = "• " + LocalizedString.Get("feature_1") });
             desc.Inlines.Add(new LineBreak());
-            desc.Inlines.Add(new Run() { Text = "• " + Translate.Get("feature_2") });
+            desc.Inlines.Add(new Run() { Text = "• " + LocalizedString.Get("feature_2") });
             desc.Inlines.Add(new LineBreak());
-            desc.Inlines.Add(new Run() { Text = "• " + Translate.Get("feature_3") });
+            desc.Inlines.Add(new Run() { Text = "• " + LocalizedString.Get("feature_3") });
             desc.Inlines.Add(new LineBreak());
-            desc.Inlines.Add(new Run() { Text = "• " + Translate.Get("feature_4") });
+            desc.Inlines.Add(new Run() { Text = "• " + LocalizedString.Get("feature_4") });
             desc.Inlines.Add(new LineBreak());
             desc.Inlines.Add(new LineBreak());
 
-            desc.Inlines.Add(new Run() { Text = Translate.Get("note") + ":", FontWeight = FontWeights.Bold, Foreground = MyColors.PhoneAccentBrush });
+            desc.Inlines.Add(new Run() { Text = LocalizedString.Get("note") + ":", FontWeight = FontWeights.Bold, Foreground = ColorUtilities.PhoneAccentBrush });
             desc.Inlines.Add(new LineBreak());
-            desc.Inlines.Add(new Run() { Text = Translate.Get("note_desc") });
+            desc.Inlines.Add(new Run() { Text = LocalizedString.Get("note_desc") });
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

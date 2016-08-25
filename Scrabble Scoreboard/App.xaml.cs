@@ -1,8 +1,4 @@
-﻿using Aura.Net;
-using Aura.Net.Common;
-using Aura.Net.Serializer;
-using Aura.Net.Storage;
-using Scrabble_Scoreboard.Classes;
+﻿using Scrabble_Scoreboard.Classes;
 using Scrabble_Scoreboard.Pages;
 using System;
 using System.Collections.Generic;
@@ -24,6 +20,11 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using AuraRT.Common;
+using AuraRT.Serializer;
+using AuraRT.Storage;
+using AuraRT.Display;
+using AuraRT.Globalization;
 
 namespace Scrabble_Scoreboard
 {
@@ -48,7 +49,7 @@ namespace Scrabble_Scoreboard
             save.Player2.Name = "Player 2";
             save.Player3.Name = "Player 3";
             save.Player4.Name = "Player 4";
-            SettingsHelper.Initialize("save", Json.Serialize(save));
+            AppSettings.Initialize("save", Json.Serialize(save));
 
             GoogleAnalytics.EasyTracker.GetTracker().SendView("App.xaml.cs");
         }
@@ -74,11 +75,6 @@ namespace Scrabble_Scoreboard
             {
                 RootFrame.GoBack();
                 e.Handled = true;
-            }
-            else
-            {
-                e.Handled = true;
-                App.Current.Exit();
             }
         }
 
@@ -116,8 +112,8 @@ namespace Scrabble_Scoreboard
                 RootFrame.Navigate(typeof(MainPage), e.Arguments);
             }
 
-            OnVisibleBoundsNavigated();
-            OnVisibleBoundsChanged(null, null);
+            //OnVisibleBoundsNavigated();
+            //OnVisibleBoundsChanged(null, null);
 
             
             GoogleAnalytics.EasyTracker.GetTracker().SendEvent("App.xaml.cs", "OnLaunched", null, 0);
@@ -128,13 +124,13 @@ namespace Scrabble_Scoreboard
 
         private void App_Resuming(object sender, object e)
         {
-            OnVisibleBoundsNavigated();
-            OnVisibleBoundsChanged(null, null);
+            //OnVisibleBoundsNavigated();
+            //OnVisibleBoundsChanged(null, null);
         }
 
         private void RootFrame_Navigated(object sender, NavigationEventArgs e)
         {
-            OnVisibleBoundsNavigated();
+            //OnVisibleBoundsNavigated();
         }
 
         public void OnVisibleBoundsNavigated()
@@ -236,8 +232,8 @@ namespace Scrabble_Scoreboard
                 ContinuationManager.Continue(continuationEventArgs);
             }
 
-            OnVisibleBoundsNavigated();
-            OnVisibleBoundsChanged(null, null);
+            //OnVisibleBoundsNavigated();
+            //OnVisibleBoundsChanged(null, null);
 
             Window.Current.Activate();
         }

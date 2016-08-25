@@ -1,30 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Aura.Net.Extensions;
-using Aura.Net;
 using Windows.UI.Text;
-using System.Diagnostics;
-using Aura.Net.Storage;
 using Scrabble_Scoreboard.Classes;
-using Aura.Net.Serializer;
-using Aura.Net.Pages;
-using Aura.Net.Controls;
-using Aura.Net.Common;
-using System.Threading.Tasks;
-using Aura.Net.Localization;
+using AuraRT.Serializer;
+using AuraRT.Display;
+using AuraRT.Globalization;
+using AuraRT.Storage;
+using Lukasss93.Controls;
+using System.Linq;
+using System.Reflection;
+using AuraRT.Imaging;
+using Windows.UI;
 
 namespace Scrabble_Scoreboard.Pages
 {
@@ -32,19 +23,20 @@ namespace Scrabble_Scoreboard.Pages
     {
         private static Enough.Async.AsyncLock asyncLock = new Enough.Async.AsyncLock();
         JsonSave save;
-        ActionButton actionbutton = ActionButton.None;
+
+        bool isEdit = false;
+        bool isDelete = false;
 
         public MainPage()
         {
             this.InitializeComponent();
             this.NavigationCacheMode = NavigationCacheMode.Required;
-            titlebar.Margin = Utilities.SetMarginTop(titlebar, StatusBar.GetForCurrentView().OccludedRect.Height);
+            CommandBarSetup(COMMANDBAR);
+
+            StatusBarHelper.SetBackground(ColorUtilities.PhoneChromeBrush.Color);
 
             GoogleAnalytics.EasyTracker.GetTracker().SendView("Mainpage.xaml.cs");
 
-            UpdateActionButtonIcon();
-            mybar_action.Click += Headeractionbutton_Click;
-            
             p1_name.Click += (sender, e) => { EditName(Players.Player1); };
             p2_name.Click += (sender, e) => { EditName(Players.Player2); };
             p3_name.Click += (sender, e) => { EditName(Players.Player3); };
@@ -55,112 +47,54 @@ namespace Scrabble_Scoreboard.Pages
             p3_add.Click += (sender, e) => { AddPoints(Players.Player3); };
             p4_add.Click += (sender, e) => { AddPoints(Players.Player4); };
 
-            mybar_clear.Click += Ab_clear_Click;
-            mybar_help.Click += (s, e) => 
+            //commandbar
+            UpdateActionButtonIcon();
+
+            cb_edit.Click += (s, e) => { SetActionButtons(true); UpdateActionButtonIcon(); };
+            cb_delete.Click += (s, e) => { SetActionButtons(false); UpdateActionButtonIcon(); };
+            cb_clear.Click += Ab_clear_Click;
+            cb_info.Click += (s, e) =>
             {
-                GoogleAnalytics.EasyTracker.GetTracker().SendEvent("Mainpage.xaml.cs", "mybar_help.Click", null, 0);
-                Frame.Navigate(typeof(HowToWorks));
+                GoogleAnalytics.EasyTracker.GetTracker().SendEvent("Mainpage.xaml.cs", "cb_info.Click", null, 0);
+                Frame.Navigate(typeof(Lukasss93.Pages.Information),Json.Serialize(MyConstants.GenerateParameter()));
             };
-            mybar_info.Click += (s, e) => 
-            {
-                GoogleAnalytics.EasyTracker.GetTracker().SendEvent("Mainpage.xaml.cs", "mybar_info.Click", null, 0);
-                List<Changelog> changes = new List<Changelog>();
-                changes.Add(new Changelog(
-                    new Version(1, 1, 0, 0),
-                    new List<string>()
-                    {
-                        Translate.Get("change_002")
-                    }
-                ));
 
-                changes.Add(new Changelog(
-                    new Version(1, 0, 0, 0),
-                    new List<string>()
-                    {
-                        Translate.Get("change_001")
-                    }
-                ));
-
-                List<MyApps> myapp = new List<MyApps>();
-                myapp.Add(new MyApps("04d27365-fe13-4f2a-85f7-222dec8c0392", new Uri("ms-appx:///Assets/app/mojang_service_statuses.png"), "Mojang Service Statuses"));
-                myapp.Add(new MyApps("858ce4f2-86c1-41c7-8733-f2d0009add2d", new Uri("ms-appx:///Assets/app/cookie.png"), "Cookie Clicker"));
-                myapp.Add(new MyApps("becfe05d-2aa6-48c4-ba9b-2b1817366f5a", new Uri("ms-appx:///Assets/app/files_locker.png"), "Files Locker"));
-                myapp.Add(new MyApps("c57e88d1-8ff9-4249-945a-9aeac1e7af51", new Uri("ms-appx:///Assets/app/brt.png"), "BRT"));
-                myapp.Add(new MyApps("2787dc44-ffae-4594-b1ca-a507c5748d80", new Uri("ms-appx:///Assets/app/suonerie.png"), "Ringtones++"));
-
-                InformationOptions iopt = new InformationOptions();
-                iopt.AboutMePage.Header = Translate.Get("aboutme");
-                iopt.AboutMePage.Avatar = new Uri("ms-appx:///Assets/img/lukasss93.png");
-                iopt.AboutMePage.FullName = "Luca Patera";
-                iopt.AboutMePage.Nickname = "@Lukasss93";
-                iopt.AboutMePage.Links = new List<Link>()
-                {
-                    new Link(Translate.Get("email"),"windowsphone@lucapatera.it",new Uri("mailto:windowsphone@lucapatera.it")),
-                    new Link(Translate.Get("website"),"www.lucapatera.it",new Uri("http://www.lucapatera.it")),
-                    new Link("facebook","www.facebook.com/Lukasss93Dev",new Uri("http://www.facebook.com/Lukasss93Dev")),
-                    new Link("twitter","www.twitter.com/Lukasss93",new Uri("http://twitter.com/Lukasss93")),
-                };
-
-                iopt.ChangelogPage.Header = Translate.Get("changelog");
-                iopt.ChangelogPage.AppLogo = new Uri("ms-appx:///Assets/img/logo.png");
-                iopt.ChangelogPage.AppName = "Scrabble Score Keeper";
-                iopt.ChangelogPage.Changes = changes;
-                iopt.ChangelogPage.Current = Translate.Get("current");
-                iopt.ChangelogPage.Rate = Translate.Get("rate");
-
-                iopt.MyAppsPage.Header = Translate.Get("myapps");
-                iopt.MyAppsPage.MyAppsList = myapp;
-
-                iopt.ProPage.Header = Translate.Get("pro");
-                iopt.ProPage.ProEnabled = false;
-
-                string serializedopt = Json.Serialize(iopt);
-                Debug.WriteLine(serializedopt);
-
-
-                Frame.Navigate(typeof(Aura.Net.Pages.Information), serializedopt);
-            };
+            cb_edit.Label = LocalizedString.Get("edit");
+            cb_delete.Label = LocalizedString.Get("delete");
+            cb_clear.Label = LocalizedString.Get("clear");
+            cb_info.Label = LocalizedString.Get("info");
 
         }
-        
-        private void Headeractionbutton_Click(object sender, RoutedEventArgs e)
+
+        private void SetActionButtons(bool v)
         {
-            if(actionbutton==ActionButton.None)
+            if(v) //edit
             {
-                actionbutton = ActionButton.Edit;
+                isEdit = !isEdit;
+
+                if(isEdit && isDelete)
+                    isDelete = false;
             }
-            else if(actionbutton==ActionButton.Edit)
+            else //delete
             {
-                actionbutton = ActionButton.Delete;
+                isDelete = !isDelete;
+
+                if(isDelete && isEdit)
+                    isEdit = false;
             }
-            else if(actionbutton==ActionButton.Delete)
-            {
-                actionbutton = ActionButton.None;
-            }
-            UpdateActionButtonIcon();
         }
 
         private void UpdateActionButtonIcon()
         {
-            switch(actionbutton)
-            {
-                case ActionButton.None:
-                    mybar_action.Content = "";
-                    break;
-                case ActionButton.Edit:
-                    mybar_action.Content = "";
-                    break;
-                case ActionButton.Delete:
-                    mybar_action.Content = "";
-                    break;
-            }
+            cb_edit.Background = isEdit ? MyConstants.appColor : new SolidColorBrush(Colors.Transparent);
+            cb_delete.Background = isDelete ? MyConstants.appColor : new SolidColorBrush(Colors.Transparent);
         }
-        
+
         private async void Ab_clear_Click(object sender, RoutedEventArgs e)
         {
             GoogleAnalytics.EasyTracker.GetTracker().SendEvent("Mainpage.xaml.cs", "Ab_clear_Click", null, 0);
 
-            if(await MessageDialogHelper.Confirm(Translate.Get("clear_1")+"\n"+Translate.Get("clear_2"), Translate.Get("warning"),Translate.Get("ok"),Translate.Get("cancel")))
+            if(await MessageDialogHelper.Confirm(LocalizedString.Get("clear_1") + "\n" + LocalizedString.Get("clear_2"), LocalizedString.Get("warning"), LocalizedString.Get("ok"), LocalizedString.Get("cancel")))
             {
 
                 JsonSave newsave = new JsonSave();
@@ -168,14 +102,14 @@ namespace Scrabble_Scoreboard.Pages
                 newsave.Player2.Name = "Player 2";
                 newsave.Player3.Name = "Player 3";
                 newsave.Player4.Name = "Player 4";
-                SettingsHelper.Set("save", Json.Serialize(newsave));
+                AppSettings.Set("save", Json.Serialize(newsave));
 
-                save = Json.Deserialize<JsonSave>((string)SettingsHelper.Get("save"));
+                save = Json.Deserialize<JsonSave>((string)AppSettings.Get("save"));
 
                 Update();
             }
         }
-        
+
         private async void EditName(Players player)
         {
             using(await asyncLock.LockAsync())
@@ -218,27 +152,27 @@ namespace Scrabble_Scoreboard.Pages
                 {
                     case Players.Player1:
                         phrase = save.Player1.Name == "Player 1" ?
-                            String.Format(Translate.Get("enter_score_player_generic"), "Player 1") :
-                            String.Format(Translate.Get("enter_score_player_name"), save.Player1.Name);
+                            String.Format(LocalizedString.Get("enter_score_player_generic"), "Player 1") :
+                            String.Format(LocalizedString.Get("enter_score_player_name"), save.Player1.Name);
                         break;
                     case Players.Player2:
                         phrase = save.Player2.Name == "Player 2" ?
-                            String.Format(Translate.Get("enter_score_player_generic"), "Player 2") :
-                            String.Format(Translate.Get("enter_score_player_name"), save.Player2.Name);
+                            String.Format(LocalizedString.Get("enter_score_player_generic"), "Player 2") :
+                            String.Format(LocalizedString.Get("enter_score_player_name"), save.Player2.Name);
                         break;
                     case Players.Player3:
                         phrase = save.Player3.Name == "Player 3" ?
-                            String.Format(Translate.Get("enter_score_player_generic"), "Player 3") :
-                            String.Format(Translate.Get("enter_score_player_name"), save.Player3.Name);
+                            String.Format(LocalizedString.Get("enter_score_player_generic"), "Player 3") :
+                            String.Format(LocalizedString.Get("enter_score_player_name"), save.Player3.Name);
                         break;
                     case Players.Player4:
                         phrase = save.Player4.Name == "Player 4" ?
-                            String.Format(Translate.Get("enter_score_player_generic"), "Player 4") :
-                            String.Format(Translate.Get("enter_score_player_name"), save.Player4.Name);
+                            String.Format(LocalizedString.Get("enter_score_player_generic"), "Player 4") :
+                            String.Format(LocalizedString.Get("enter_score_player_name"), save.Player4.Name);
                         break;
                 }
-                
-                var res = await MessageDialogHelper.DialogTextBox(phrase, Translate.Get("enter_score"), "", Translate.Get("ok"), Translate.Get("cancel"), null, null, InputScopeNameValue.NumberFullWidth);
+
+                var res = await MessageDialogHelper.DialogTextBox(phrase, LocalizedString.Get("enter_score"), "", LocalizedString.Get("ok"), LocalizedString.Get("cancel"), null, null, InputScopeNameValue.NumberFullWidth);
                 if(res.result)
                 {
                     int value;
@@ -257,7 +191,7 @@ namespace Scrabble_Scoreboard.Pages
                     }
                     else
                     {
-                        MessageDialogHelper.Show(Translate.Get("allowed_int_num"), Translate.Get("warning"));
+                        MessageDialogHelper.Show(LocalizedString.Get("allowed_int_num"), LocalizedString.Get("warning"));
                     }
                 }
             }
@@ -268,13 +202,17 @@ namespace Scrabble_Scoreboard.Pages
             //Debug.WriteLine((string)SettingsHelper.Get("save"));
             GoogleAnalytics.EasyTracker.GetTracker().SendEvent("Mainpage.xaml.cs", "OnNavigatedTo", null, 0);
 
-            save = Json.Deserialize<JsonSave>((string)SettingsHelper.Get("save"));
+            save = Json.Deserialize<JsonSave>((string)AppSettings.Get("save"));
             Update();
+
+            cb_edit.IsCompact = true;
+            cb_delete.IsCompact = true;
+            cb_clear.IsCompact = true;
         }
-        
+
         private void Save()
         {
-            SettingsHelper.Set("save",Json.Serialize(save));
+            AppSettings.Set("save", Json.Serialize(save));
         }
 
         private void Update()
@@ -295,7 +233,7 @@ namespace Scrabble_Scoreboard.Pages
             p2_tot_grid.Background = new SolidColorBrush(save.Player2.PlayerColor);
             p3_tot_grid.Background = new SolidColorBrush(save.Player3.PlayerColor);
             p4_tot_grid.Background = new SolidColorBrush(save.Player4.PlayerColor);
-            
+
             //imposta i punti ai player e fai la somma
             int somma1 = 0;
             int somma2 = 0;
@@ -319,11 +257,11 @@ namespace Scrabble_Scoreboard.Pages
                 button.Tag = new PlayerPoint(Players.Player1, index);
                 button.Click += PointButton;
 
-                
+
                 p1_stack.Children.Add(button);
 
                 somma1 += point;
-                index++;             
+                index++;
             }
 
             p2_stack.Children.Clear();
@@ -343,10 +281,10 @@ namespace Scrabble_Scoreboard.Pages
                 button.Tag = new PlayerPoint(Players.Player2, index);
                 button.Click += PointButton;
 
-                p2_stack.Children.Add(button);                
+                p2_stack.Children.Add(button);
 
                 somma2 += point;
-                index++;           
+                index++;
             }
 
             p3_stack.Children.Clear();
@@ -369,7 +307,7 @@ namespace Scrabble_Scoreboard.Pages
                 p3_stack.Children.Add(button);
 
                 somma3 += point;
-                index++;               
+                index++;
             }
 
             p4_stack.Children.Clear();
@@ -402,9 +340,10 @@ namespace Scrabble_Scoreboard.Pages
             p4_tot.Text = somma4 + "";
 
             //inizializza pulsante azione
-            if(save.Player1.Points.Count+save.Player2.Points.Count+save.Player3.Points.Count+save.Player4.Points.Count==0)
+            if(save.Player1.Points.Count + save.Player2.Points.Count + save.Player3.Points.Count + save.Player4.Points.Count == 0)
             {
-                actionbutton = ActionButton.None;
+                isEdit = false;
+                isDelete = false;
                 UpdateActionButtonIcon();
             }
 
@@ -412,75 +351,102 @@ namespace Scrabble_Scoreboard.Pages
 
         private async void PointButton(object sender, RoutedEventArgs e)
         {
-            if(actionbutton != ActionButton.None)
+            if(isEdit || isDelete)
             {
                 Button thisbutton = (sender as Button);
                 PlayerPoint playerpoint = (PlayerPoint)thisbutton.Tag;
 
-                switch(actionbutton)
+                if(isEdit)
                 {
-                    case ActionButton.Edit:
-
-                        var res = await MessageDialogHelper.DialogTextBox(Translate.Get("edit_text"), Translate.Get("edit_title"), (string)thisbutton.Content,Translate.Get("ok"),Translate.Get("cancel"),null,null, InputScopeNameValue.NumberFullWidth);
-                        if(res.result)
+                    var res = await MessageDialogHelper.DialogTextBox(LocalizedString.Get("edit_text"), LocalizedString.Get("edit_title"), (string)thisbutton.Content, LocalizedString.Get("ok"), LocalizedString.Get("cancel"), null, null, InputScopeNameValue.NumberFullWidth);
+                    if(res.result)
+                    {
+                        int value;
+                        if(int.TryParse(res.output, out value))
                         {
-                            int value;
-                            if(int.TryParse(res.output, out value))
+                            switch(playerpoint.player)
                             {
-                                switch(playerpoint.player)
-                                {
-                                    case Players.Player1:
-                                        save.Player1.Points[playerpoint.index] = value;
-                                        break;
-                                    case Players.Player2:
-                                        save.Player2.Points[playerpoint.index] = value;
-                                        break;
-                                    case Players.Player3:
-                                        save.Player3.Points[playerpoint.index] = value;
-                                        break;
-                                    case Players.Player4:
-                                        save.Player4.Points[playerpoint.index] = value;
-                                        break;
-                                }
-                            }
-                            else
-                            {
-                                MessageDialogHelper.Show(Translate.Get("allowed_int_num"), Translate.Get("warning"));
+                                case Players.Player1:
+                                    save.Player1.Points[playerpoint.index] = value;
+                                    break;
+                                case Players.Player2:
+                                    save.Player2.Points[playerpoint.index] = value;
+                                    break;
+                                case Players.Player3:
+                                    save.Player3.Points[playerpoint.index] = value;
+                                    break;
+                                case Players.Player4:
+                                    save.Player4.Points[playerpoint.index] = value;
+                                    break;
                             }
                         }
-
-                        break;
-
-                    case ActionButton.Delete:
-
-                        switch(playerpoint.player)
+                        else
                         {
-                            case Players.Player1:
-                                save.Player1.Points.RemoveAt(playerpoint.index);
-                                break;
-                            case Players.Player2:
-                                save.Player2.Points.RemoveAt(playerpoint.index);
-                                break;
-                            case Players.Player3:
-                                save.Player3.Points.RemoveAt(playerpoint.index);
-                                break;
-                            case Players.Player4:
-                                save.Player4.Points.RemoveAt(playerpoint.index);
-                                break;
+                            MessageDialogHelper.Show(LocalizedString.Get("allowed_int_num"), LocalizedString.Get("warning"));
                         }
+                    }
 
-                        break;
                 }
+                else if(isDelete)
+                {
+
+
+                    switch(playerpoint.player)
+                    {
+                        case Players.Player1:
+                            save.Player1.Points.RemoveAt(playerpoint.index);
+                            break;
+                        case Players.Player2:
+                            save.Player2.Points.RemoveAt(playerpoint.index);
+                            break;
+                        case Players.Player3:
+                            save.Player3.Points.RemoveAt(playerpoint.index);
+                            break;
+                        case Players.Player4:
+                            save.Player4.Points.RemoveAt(playerpoint.index);
+                            break;
+                    }
+
+                }
+
 
                 Save();
                 Update();
             }
         }
-        
+
         private void ScrollToBottom()
         {
             myscroll.ChangeView(null, myscroll.ScrollableHeight, null, false);
             myscroll.UpdateLayout();
+        }
+
+        private void CommandBarSetup(CommandBarBar commandBar)
+        {
+            var children = commandBar.PrimaryCommands.Union(commandBar.SecondaryCommands);
+            var runtimeFields = this.GetType().GetRuntimeFields();
+
+            foreach(DependencyObject i in children)
+            {
+                var info = i.GetType().GetRuntimeProperty("Name");
+
+                if(info != null)
+                {
+                    string name = (string)info.GetValue(i);
+
+                    if(name != null)
+                    {
+                        foreach(FieldInfo j in runtimeFields)
+                        {
+                            if(j.Name == name)
+                            {
+                                j.SetValue(this, i);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
