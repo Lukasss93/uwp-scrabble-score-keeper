@@ -1,0 +1,34 @@
+﻿<ContentDialog
+    x:Class="ScrabbleScoreKeeper.Dialogs.EditPlayer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ScrabbleScoreKeeper.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Modifica giocatore"
+    PrimaryButtonText="Salva"
+    SecondaryButtonText="Annulla">
+
+    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,15,0,0">
+        <TextBox x:Name="name" Header="Nome" Margin="0,0,0,5"/>
+        <ComboBox x:Name="color" Header="Colore" IsSynchronizedWithCurrentItem="False" HorizontalAlignment="Stretch" Margin="0,5,0,0">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Background="{Binding Color}" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Name}" Grid.Column="1" Margin="6,0,0,0"/>
+                    </Grid>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button x:Name="reset" 
+                Content="Reimposta" 
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" Margin="0,21,0,0"/>
+    </StackPanel>
+</ContentDialog>

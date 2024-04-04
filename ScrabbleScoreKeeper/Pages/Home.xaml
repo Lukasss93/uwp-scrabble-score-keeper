@@ -1,0 +1,118 @@
+﻿<Page
+    x:Class="ScrabbleScoreKeeper.Pages.Home"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ScrabbleScoreKeeper.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <ContinuumNavigationTransitionInfo/>
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
+
+    <Grid x:Name="ROOT" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="HEADER" Grid.Row="0" Height="48" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="48"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <FontIcon FontSize="22" FontFamily="Segoe MDL2 Assets" Glyph="&#xE003;" Foreground="{ThemeResource AppAccent}"/>
+            <FontIcon Glyph="A" FontFamily="Segoe UI" FontSize="16" Foreground="{ThemeResource AppAccent}" Margin="0,0,0,3"/>
+            <FontIcon Glyph="1" FontFamily="Segoe UI" FontSize="6" Foreground="{ThemeResource AppAccent}" Margin="15,12,0,0"/>
+            <TextBlock x:Name="title" Text="Scrabble Score Keeper" Grid.Column="1" VerticalAlignment="Center" FontWeight="SemiBold" Margin="10,0"/>
+        </Grid>
+
+        <Grid x:Name="PLAYERS_NAME" Grid.Row="1" Height="48" Margin="0,1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="p1_name" Content="Player 1" Style="{StaticResource PlayerButtonStyle}" Grid.Column="0" Margin="0,0,1,0"/>
+            <Button x:Name="p2_name" Content="Player 2" Style="{StaticResource PlayerButtonStyle}" Grid.Column="1" Margin="0,0,1,0"/>
+            <Button x:Name="p3_name" Content="Player 3" Style="{StaticResource PlayerButtonStyle}" Grid.Column="2" Margin="0,0,1,0"/>
+            <Button x:Name="p4_name" Content="Player 4" Style="{StaticResource PlayerButtonStyle}" Grid.Column="3" />
+        </Grid>
+
+        <ScrollViewer x:Name="BOARD" Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="0,0,0,-1">
+            <Grid x:Name="pstack" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel x:Name="p1_stack" VerticalAlignment="Top"/>
+                <StackPanel x:Name="p2_stack" VerticalAlignment="Top" Grid.Column="1"/>
+                <StackPanel x:Name="p3_stack" VerticalAlignment="Top" Grid.Column="2"/>
+                <StackPanel x:Name="p4_stack" VerticalAlignment="Top" Grid.Column="3"/>
+
+            </Grid>
+        </ScrollViewer>
+        
+        <Grid x:Name="ADD_BUTTONS" Height="48" Grid.Row="3" Margin="0,1,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="p1_add" Content="+" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="80" FontSize="30" FontWeight="Bold" BorderThickness="0" MinHeight="30" Margin="0,0,1,0" Padding="9.5,0,9.5,6"/>
+            <Button x:Name="p2_add" Content="+" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="80" FontSize="30" FontWeight="Bold" BorderThickness="0" MinHeight="30" Margin="0,0,1,0" Padding="9.5,0,9.5,6" Grid.Column="1"/>
+            <Button x:Name="p3_add" Content="+" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="80" FontSize="30" FontWeight="Bold" BorderThickness="0" MinHeight="30" Margin="0,0,1,0" Padding="9.5,0,9.5,6" Grid.Column="2"/>
+            <Button x:Name="p4_add" Content="+" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="80" FontSize="30" FontWeight="Bold" BorderThickness="0" MinHeight="30" Margin="0" Padding="9.5,0,9.5,6" Grid.Column="3"/>
+        </Grid>
+
+        <Grid x:Name="TOTALS" Height="48" Grid.Row="4" Margin="0,1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid x:Name="p1_tot_grid" Background="{ThemeResource SystemControlBackgroundAccentBrush}" Margin="0,0,1,0">
+                <TextBlock x:Name="p1_tot" HorizontalAlignment="Center" Text="0" VerticalAlignment="Center" FontFamily="Segoe WP" FontSize="29.333" TextAlignment="Center" Foreground="White" TextLineBounds="Tight"/>
+            </Grid>
+            <Grid x:Name="p2_tot_grid" Background="{ThemeResource SystemControlBackgroundAccentBrush}" Grid.Column="1" Margin="0,0,1,0">
+                <TextBlock x:Name="p2_tot" HorizontalAlignment="Center" Text="0" VerticalAlignment="Center" FontFamily="Segoe WP" FontSize="29.333" TextAlignment="Center" Foreground="White" TextLineBounds="Tight"/>
+            </Grid>
+            <Grid x:Name="p3_tot_grid" Background="{ThemeResource SystemControlBackgroundAccentBrush}" Grid.Column="2" Margin="0,0,1,0">
+                <TextBlock x:Name="p3_tot" HorizontalAlignment="Center" Text="0" VerticalAlignment="Center" FontFamily="Segoe WP" FontSize="29.333" TextAlignment="Center" Foreground="White" TextLineBounds="Tight"/>
+            </Grid>
+            <Grid x:Name="p4_tot_grid" Background="{ThemeResource SystemControlBackgroundAccentBrush}" Grid.Column="3">
+                <TextBlock x:Name="p4_tot" HorizontalAlignment="Center" Text="0" VerticalAlignment="Center" FontFamily="Segoe WP" FontSize="29.333" TextAlignment="Center" Foreground="White" TextLineBounds="Tight"/>
+            </Grid>
+        </Grid>
+
+        <CommandBar Grid.Row="5">
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="cb_settings" Label="Impostazioni"/>
+                <AppBarButton x:Name="cb_info" Label="Informazioni"/>
+            </CommandBar.SecondaryCommands>
+            <CommandBar.Content>
+                <Grid/>
+            </CommandBar.Content>
+            <AppBarToggleButton x:Name="cb_edit" Icon="Edit" Label="Modifica" Style="{StaticResource CBToggleButtonStyle}"/>
+            <AppBarToggleButton x:Name="cb_delete" Icon="Delete" Label="Elimina" Style="{StaticResource CBToggleButtonStyle}"/>
+            <AppBarButton x:Name="cb_clear" Icon="Clear" Label="Pulisci"/>
+        </CommandBar>
+
+    </Grid>
+</Page>

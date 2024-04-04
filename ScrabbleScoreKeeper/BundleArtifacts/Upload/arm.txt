@@ -1,0 +1,4 @@
+MainPackage=C:\Users\LucaFisso\Desktop\♥ Scrabble Score Keeper\ScrabbleScoreKeeper\bin\ARM\Release\Upload\ScrabbleScoreKeeper_2.0.1.0_ARM.appx
+SymbolPackage=C:\Users\LucaFisso\Desktop\♥ Scrabble Score Keeper\ScrabbleScoreKeeper\AppPackages\ScrabbleScoreKeeper_2.0.1.0\ScrabbleScoreKeeper_2.0.1.0_ARM.appxsym
+ResourcePack=C:\Users\LucaFisso\Desktop\♥ Scrabble Score Keeper\ScrabbleScoreKeeper\_language-en.appx
+ResourcePack=C:\Users\LucaFisso\Desktop\♥ Scrabble Score Keeper\ScrabbleScoreKeeper\_language-it.appx

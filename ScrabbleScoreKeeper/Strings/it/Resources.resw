@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+        <xsd:element name="root" msdata:IsDataSet="true">
+            <xsd:complexType>
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="metadata">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" use="required" type="xsd:string" />
+                            <xsd:attribute name="type" type="xsd:string" />
+                            <xsd:attribute name="mimetype" type="xsd:string" />
+                            <xsd:attribute ref="xml:space" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="assembly">
+                        <xsd:complexType>
+                            <xsd:attribute name="alias" type="xsd:string" />
+                            <xsd:attribute name="name" type="xsd:string" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+                            <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+                            <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+                            <xsd:attribute ref="xml:space" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="resheader">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" />
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
+            </xsd:complexType>
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>    
+	<data name="add" xml:space="preserve">
+		<value>Aggiungi</value>
+	</data>
+	<data name="allowed_int_num" xml:space="preserve">
+		<value>Sono consentiti solo numeri interi.</value>
+	</data>
+	<data name="appdescription" xml:space="preserve">
+		<value>Tieni traccia dei tuoi punteggi in Scrabble con facilità!</value>
+	</data>
+	<data name="cancel" xml:space="preserve">
+		<value>Annulla</value>
+	</data>
+	<data name="changelog1" xml:space="preserve">
+		<value>Versione iniziale</value>
+	</data>
+	<data name="changelog2" xml:space="preserve">
+		<value>Bug fix</value>
+	</data>
+	<data name="changelog3" xml:space="preserve">
+		<value>Piccoli cambiamenti grafici</value>
+	</data>
+	<data name="changelog4" xml:space="preserve">
+		<value>Rimosso supporto a WP 8.1</value>
+	</data>
+	<data name="changelog5" xml:space="preserve">
+		<value>Aggiunto supporto UWP</value>
+	</data>
+	<data name="clear" xml:space="preserve">
+		<value>Pulisci</value>
+	</data>
+	<data name="clear_1" xml:space="preserve">
+		<value>Sicuro di voler pulire tutto?</value>
+	</data>
+	<data name="clear_2" xml:space="preserve">
+		<value>Tutti i salvataggi verranno eliminati.</value>
+	</data>
+	<data name="color" xml:space="preserve">
+		<value>Colore</value>
+	</data>
+	<data name="color_blue" xml:space="preserve">
+		<value>Blu</value>
+	</data>
+	<data name="color_green" xml:space="preserve">
+		<value>Verde</value>
+	</data>
+	<data name="color_red" xml:space="preserve">
+		<value>Rosso</value>
+	</data>
+	<data name="color_yellow" xml:space="preserve">
+		<value>Giallo</value>
+	</data>
+	<data name="delete" xml:space="preserve">
+		<value>Cancella</value>
+	</data>
+	<data name="disclaimer" xml:space="preserve">
+		<value>Questa app non è affiliata con il gioco da tavolo Scrabble né con i suoi creatori.</value>
+	</data>
+	<data name="edit" xml:space="preserve">
+		<value>Modifica</value>
+	</data>
+	<data name="edit_player" xml:space="preserve">
+		<value>Modifica giocatore</value>
+	</data>
+	<data name="enter_score" xml:space="preserve">
+		<value>Aggiungi punteggio a {0}</value>
+	</data>
+	<data name="feature1" xml:space="preserve">
+		<value>Fino a 4 giocatori!</value>
+	</data>
+	<data name="feature2" xml:space="preserve">
+		<value>Colore personalizzato per ogni giocatore</value>
+	</data>
+	<data name="feature3" xml:space="preserve">
+		<value>Pulsante azione per modificare o eliminare un punteggio in modo veloce</value>
+	</data>
+	<data name="feature4" xml:space="preserve">
+		<value>Salvataggio automatico ad ogni azione</value>
+	</data>
+	<data name="info" xml:space="preserve">
+		<value>Informazioni</value>
+	</data>
+	<data name="name" xml:space="preserve">
+		<value>Nome</value>
+	</data>
+	<data name="reset" xml:space="preserve">
+		<value>Reimposta</value>
+	</data>
+	<data name="save" xml:space="preserve">
+		<value>Salva</value>
+	</data>
+	<data name="warning" xml:space="preserve">
+		<value>Attenzione</value>
+	</data>
+	<data name="ok" xml:space="preserve">
+		<value>Ok</value>
+	</data>
+	<data name="edit_text" xml:space="preserve">
+		<value>Inserisci il nuovo valore</value>
+	</data>
+	<data name="edit_title" xml:space="preserve">
+		<value>Modifica valore</value>
+	</data>
+	<data name="settings" xml:space="preserve">
+		<value>Impostazioni</value>
+	</data>
+	<data name="automatic" xml:space="preserve">
+		<value>Automatico</value>
+	</data>
+	<data name="dark" xml:space="preserve">
+		<value>Scuro</value>
+	</data>
+	<data name="light" xml:space="preserve">
+		<value>Chiaro</value>
+	</data>
+	<data name="theme" xml:space="preserve">
+		<value>Tema</value>
+	</data>
+	<data name="theme_warning" xml:space="preserve">
+		<value>È necessario riavviare l'app per applicare il tema.</value>
+	</data>
+	<data name="transparent_tile" xml:space="preserve">
+		<value>Tile trasparente</value>
+	</data>
+</root>
